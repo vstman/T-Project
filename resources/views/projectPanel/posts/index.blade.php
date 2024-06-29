@@ -19,7 +19,7 @@
     @endforeach
         <hr>
     @auth
-    <a href="{{route('posts_create')}}">
+    <a href="{{route('admin.posts.create')}}">
         <button class="btn-success">Ekle</button>
     </a>
     @endauth
