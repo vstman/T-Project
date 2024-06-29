@@ -26,7 +26,7 @@
     </style>
 </head>
 <body>
-<!-- Navigation-->
+   <!-- Navigation-->
 <nav class="navbar navbar-light bg-light static-top">
     <div class="container">
     <a class="navbar-brand" href="#">Turgut Özal Üniversitesi</a>
@@ -46,6 +46,10 @@
             <!--<a class="btn btn-primary" href="#">Admin Girişi</a>-->
     </div>
 </nav>
+
+<div class="container p-3">
+    @yield('content')
+</div>
 
 <!-- Footer-->
 <footer class="footer bg-light">

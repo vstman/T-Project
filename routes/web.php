@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\PostController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -13,9 +13,13 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('projectPanel.layout.app');
-});
+Route::get('/posts/create' , [PostController::class , 'create'])->name('posts_create')->middleware('auth');
+
+
+
+Route::get('/', function () {   return view('projectPanel.layout.app'); });
+Route::get('/posts' , [PostController::class , 'index'])->name('posts_index');
+Route::post('/posts' , [PostController::class , 'addPost'])->name('posts_addpost');
 
 Route::middleware([
     'auth:sanctum',
