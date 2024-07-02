@@ -29,12 +29,3 @@ Route::post('/posts' , [PostController::class , 'addPost'])->name('posts_addpost
 Route::post('/upload' , [PostController::class , 'upload'])->name('ckeditor.upload');
 
 
-Route::middleware([
-    'auth:sanctum',
-    config('jetstream.auth_session'),
-    'verified',
-])->group(function () {
-    Route::get('/dashboard', function () {
-        return view('dashboard');
-    })->name('dashboard');
-});
