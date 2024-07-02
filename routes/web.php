@@ -23,7 +23,11 @@ Route::prefix('admin')->name('admin.')->group(function () {
 });
 
 
-Route::get('/', function () {   return view('projectPanel.layout.app'); });
+Route::get('/login', [AuthManager::class , 'login'])->name('login');
+Route::post('/login', [AuthManager::class , 'loginPost'])->name('login.post');
+
+
+//Route::get('/', function () {   return view('projectPanel.layout.app'); });
 Route::get('/posts' , [PostController::class , 'index'])->name('posts_index');
 Route::post('/posts' , [PostController::class , 'addPost'])->name('posts_addpost');
 Route::post('/upload' , [PostController::class , 'upload'])->name('ckeditor.upload');

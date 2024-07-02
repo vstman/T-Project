@@ -78,11 +78,11 @@
     <div class="login-container">
         <div class="login-box">
             <h2>LOGIN</h2>
-            <form action="" method="POST">
+            <form action="{{route('login.post')}}" method="POST">
                 @csrf
                 <div class="form-group">
-                    <input type="text" id="username" name="username" class="form-control" required
-                           placeholder="Username">
+                    <input type="text" id="email" name="email" class="form-control" required
+                           placeholder="E-Posta">
                 </div>
                 <div class="form-group">
                     <input type="password" id="password" name="password" class="form-control" required
