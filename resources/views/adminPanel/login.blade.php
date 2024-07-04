@@ -1,15 +1,13 @@
 @extends('projectPanel.layout.app')
 @section('style_content')
     <style>
-        body, html {
-
-            font-family: Arial, sans-serif;
-        }
-
         .login-container {
             display: flex;
             justify-content: center;
             align-items: center;
+            height: 65vh; /* Yüksekliği tüm ekran yapar */
+            font-family: Arial, sans-serif;
+            position: relative;
         }
 
         .login-box {
@@ -19,6 +17,7 @@
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             border-radius: 10px;
             text-align: center;
+            z-index: 1; /* Kutuyu üst katmanda tutar */
         }
 
         .login-box h2 {
@@ -72,13 +71,35 @@
         .forgot-link:hover {
             text-decoration: underline;
         }
+
+        .alert {
+            margin-bottom: 15px;
+            padding: 10px;
+            border: 1px solid transparent;
+            border-radius: 4px;
+            position: absolute;
+            bottom: 20px; /* Mesajı kutunun üstünde tutar */
+            z-index: 2; /* Mesajı en üst katmanda tutar */
+            width: 320px; /* Giriş kutusu ile aynı genişlikte */
+        }
+
+        .alert-danger {
+            color: #a94442;
+            background-color: #f2dede;
+            border-color: #ebccd1;
+        }
     </style>
 @endsection
 @section('content')
     <div class="login-container">
+        @if(session('error'))
+            <div class="alert alert-danger" role="alert">
+                {{ session('error') }}
+            </div>
+        @endif
         <div class="login-box">
-            <h2>LOGIN</h2>
-            <form action="{{route('login.post')}}" method="POST">
+            <h2>GİRİŞ</h2>
+            <form action="{{ route('login.post') }}" method="POST">
                 @csrf
                 <div class="form-group">
                     <input type="text" id="email" name="email" class="form-control" required
@@ -86,15 +107,25 @@
                 </div>
                 <div class="form-group">
                     <input type="password" id="password" name="password" class="form-control" required
-                           placeholder="Password">
+                           placeholder="Şifre">
                 </div>
                 <div class="form-group form-remember">
                     <input type="checkbox" id="remember" name="remember">
-                    <label for="remember">Remember me</label>
-                    <a href="" class="forgot-link">Forgot?</a>
+                    <label for="remember">Beni Hatırla</label>
+                    <a href="" class="forgot-link">Şifremi Unuttum?</a>
                 </div>
-                <button type="submit" class="btn btn-primary">LOGIN</button>
+                <button type="submit" class="btn btn-primary">GİRİŞ YAP</button>
             </form>
         </div>
     </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var alertBox = document.querySelector('.alert');
+            if (alertBox) {
+                setTimeout(function() {
+                    alertBox.style.display = 'none';
+                }, 5000); // 5000 milisaniye (5 saniye) sonra kaybolur
+            }
+        });
+    </script>
 @endsection
