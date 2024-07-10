@@ -39,12 +39,11 @@
 <div class="container " style="margin-top: 80px">
     @yield('content')
 </div>
-<div class="container">
-    @yield('footer-top')
-</div>
+
 <!-- Footer-->
 <footer class="footer bg-light">
-    <div class="container">
+    @yield('footer-top')
+    <div class="container" style="margin-bottom: 45px">
 
         <div class="row">
             <div class="col-lg-6 text-center text-lg-start">

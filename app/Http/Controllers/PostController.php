@@ -12,7 +12,9 @@ class PostController extends Controller
         $posts = Post::paginate(12);
         return view('projectPanel.posts.index', compact('posts'));
     }
-
+    public function admin_index(){
+        return view('adminPanel.layout.app');
+    }
     public function create(){
         return view('projectPanel.posts.create');
     }

@@ -4,7 +4,7 @@
         <div class="row">
             @foreach($posts as $post)
                 <div class="col-md-3">
-                    <div class="card">
+                    <div class="card mb-3">
                         <div class="card-body d-flex flex-column">
                             <h5 class="card-title">{{$post->title}}</h5>
                             <p class="card-text">{!! $post->content !!}</p>
@@ -21,8 +21,8 @@
 @endsection
 
 @section('footer-top')
-    <div class="row mt-4 container">
-        <div class="col-md-12 d-flex justify-content-between">
+    <div class="container">
+        <div class="col-md-12 d-flex justify-content-between" style="padding-bottom: 0">
             @auth
                 <div>
                     <a href="{{ route('admin.posts.create') }}" class="btn btn-success">Ekle</a>

@@ -25,7 +25,7 @@ class AuthManager extends Controller
 
         $credidentals = $request->only('email', 'password');
         if (Auth::attempt($credidentals)) {
-            return redirect()->intended(route('admin.index'));
+            return redirect()->intended(route('admin.admin_index'));
         }
         return redirect(route('login'))->with('error', 'Girilen bilgiler doğru değil!');
     }
