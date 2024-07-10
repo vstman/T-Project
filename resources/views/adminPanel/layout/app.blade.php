@@ -48,7 +48,7 @@
         <div class="sidebar-wrapper scrollbar scrollbar-inner">
             <div class="sidebar-content">
                 <ul class="nav nav-secondary">
-                    <li class="nav-item">
+                    <li class="nav-item submenu">
                         <a
                             data-bs-toggle="collapse"
                             class="collapsed"
@@ -59,7 +59,7 @@
                         </a>
                     </li>
                     <br>
-                    <li class="nav-item">
+                    <li class="nav-item submenu">
                         <a
                             data-bs-toggle="collapse"
                             href="#"
@@ -71,7 +71,7 @@
                         </a>
                     </li>
                     <br>
-                    <li class="nav-item">
+                    <li class="nav-item submenu">
                         <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                             @csrf
                         </form>

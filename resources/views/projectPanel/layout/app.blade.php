@@ -23,7 +23,6 @@
         .footer {
             bottom: 0;
             width: 100%;
-            height: 100px;
             position: fixed;
         }
     </style>
@@ -42,8 +41,7 @@
 
 <!-- Footer-->
 <footer class="footer bg-light">
-    @yield('footer-top')
-    <div class="container" style="margin-bottom: 45px">
+    <div class="container">
 
         <div class="row">
             <div class="col-lg-6 text-center text-lg-start">
