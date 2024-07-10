@@ -15,7 +15,7 @@ use App\Http\Controllers\AuthManager;
 */
 
 Route::prefix('admin')->name('admin.')->group(function () {
-    Route::get('/', [PostController::class, 'admin_index'])->name('admin_index')->middleware('auth');
+    Route::get('/', [PostController::class, 'admin_index'])->name('index')->middleware('auth');
     Route::get('/posts/create', [PostController::class, 'create'])->name('posts.create')->middleware('auth');
     Route::get('/posts/{id}/edit', [PostController::class, 'edit'])->name('posts.edit')->middleware('auth');
     Route::put('/posts/{id}', [PostController::class, 'update'])->name('posts.update')->middleware('auth');
