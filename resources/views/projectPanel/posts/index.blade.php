@@ -13,7 +13,6 @@
                                     <button class="btn btn-warning btn-sm">Detay</button>
                     </a>
                     <a href="{{ route('posts.details', $post->id) }}" class="mt-auto ml-auto">
-                                    <button class="btn btn-warning btn-sm">Sil</button>
                     </a>
                 </div>
             </div>
