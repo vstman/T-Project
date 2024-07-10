@@ -16,7 +16,6 @@
                     <th>İçerik</th>
                     <th>Yayın Tarihi</th>
                     <th>İşlemler</th>
-                    
                 </tr>
             </thead>
             <tbody>
@@ -27,17 +26,17 @@
                         <td>{{ $post->created_at->format('Y-m-d') }}</td>
                         <td>
                             <a href="{{ route('admin.posts.edit', $post->id) }}" class="btn btn-primary">Düzenle</a>
-                            <form action="{{ route('admin.posts.destroy', $post->id) }}" method="POST" style="display:inline;">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-danger">Sil</button>
-                            </form>
+                            <a href="{{ route('posts.details', $post->id) }}" class="btn btn-primary">Detay</a>
+                            <button class="btn btn-danger" onclick="confirmDeletion('{{ route('admin.posts.destroy', $post->id) }}')">Sil</button>
                         </td>
                     </tr>
                 @endforeach
             </tbody>
         </table>
     </div>
+
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"
             integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
@@ -46,10 +45,49 @@
         $(document).ready(function () {
             $('#example').DataTable({
                 "columnDefs": [
-                    {"orderable": false, "targets": 3} // Disable sorting on the 'Edit' column
+                    {"orderable": false, "targets": 3} // Disable sorting on the 'Edit' and 'Delete' columns
                 ]
             });
         });
+
+        function confirmDeletion(url) {
+            Swal.fire({
+                title: 'Bu öğeyi silmek istediğinize emin misiniz?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Evet, sil!',
+                cancelButtonText: 'Hayır'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: url,
+                        type: 'POST',
+                        data: {
+                            _method: 'DELETE',
+                            _token: '{{ csrf_token() }}'
+                        },
+                        success: function(result) {
+                            Swal.fire(
+                                'Silindi!',
+                                'Öğe başarıyla silindi.',
+                                'success'
+                            ).then(() => {
+                                location.reload();
+                            });
+                        },
+                        error: function(result) {
+                            Swal.fire(
+                                'Hata!',
+                                'Öğe silinirken bir hata oluştu.',
+                                'error'
+                            );
+                        }
+                    });
+                }
+            })
+        }
     </script>
 
 @endsection

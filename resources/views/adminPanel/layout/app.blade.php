@@ -60,16 +60,27 @@
                     </li>
                     <br>
                     <li class="nav-item submenu">
-                        <a
-                            data-bs-toggle="collapse"
-                            href="#"
-                            class="collapsed"
-                            aria-expanded="false"
-                        >
-                            <i class="fas fa-project-diagram"></i>
-                            <p>Projeler</p>
-                        </a>
-                    </li>
+    <a
+        data-bs-toggle="collapse"
+        href="#collapseExample"
+        class="collapsed"
+        aria-expanded="false"
+    >
+        <i class="fas fa-project-diagram"></i>
+        Projeler
+    </a>
+    <div id="collapseExample" class="collapse">
+        <ul class="nav nav-collapse">
+            <li>
+                <a href="{{ route('admin.posts.create') }}">Yeni Proje Ekle</a>
+            </li>
+            <li>
+                <a href="{{ route('admin.index') }}">Projeleri Yönet</a>
+            </li>
+        </ul>
+    </div>
+</li>
+
                     <br>
                     <li class="nav-item submenu">
                         <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
