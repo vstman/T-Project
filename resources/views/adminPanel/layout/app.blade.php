@@ -26,7 +26,7 @@
         <div class="sidebar-logo">
             <!-- Logo Header -->
             <div class="logo-header" data-background-color="dark">
-                <a href="#" class="logo">
+                <a href="{{route('admin.index')}}" class="logo">
                     <img
                         src="{{asset('adminPanel/assets/img/test.webp')}}"
                         alt="navbar brand"
