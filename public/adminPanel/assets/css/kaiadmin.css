@@ -326,7 +326,7 @@ body {
   border: 1px solid #eaeaea; }
 
 .main-header {
-  background: #ffffff;
+  background: #000000;
   min-height: 60px;
   width: calc(100% - 250px);
   position: fixed;
@@ -6873,7 +6873,7 @@ body {
     padding: 60px 15px !important; } }
 /*     	Page 404     */
 .page-not-found {
-
+  background-image: url("../img/bg-404.jpeg");
   background-size: cover;
   background-position: center;
   image-rendering: pixelated; }
@@ -6910,4 +6910,4 @@ body {
   .wrapper.not-found .desc {
     font-size: 18px !important; } }
 
-/*# sourceMappingURL=style.css.map */
+/*# sourceMappingURL=kaiadmin.css.map */
