@@ -6873,7 +6873,7 @@ body {
     padding: 60px 15px !important; } }
 /*     	Page 404     */
 .page-not-found {
-  background-image: url("../img/bg-404.jpeg");
+
   background-size: cover;
   background-position: center;
   image-rendering: pixelated; }

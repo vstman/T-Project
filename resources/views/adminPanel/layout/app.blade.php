@@ -1,34 +1,31 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
     <title>Projelerimiz -Admin</title>
-
     <link rel="icon" type="image/x-icon" href="{{asset('projectPanel/assets/favicon.ico')}}"/>
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
-          integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <link rel="stylesheet" href="//cdn.datatables.net/2.0.8/css/dataTables.dataTables.min.css">
 
     <!-- CSS Files -->
     <link rel="stylesheet" href="{{asset('adminPanel/assets/css/bootstrap.min.css')}}"/>
-
     <link rel="stylesheet" href="{{asset('adminPanel/assets/css/kaiadmin.min.css')}}"/>
 
+    <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
     <style>
         @media (max-width: 768px) {
             .sidebar {
                 display: none;
             }
-
             .sidebar.active {
                 display: block;
                 position: absolute;
                 width: 250px;
                 z-index: 1000;
             }
-
             .sidenav-toggled .sidebar {
                 display: block;
             }
@@ -47,14 +44,11 @@
                 </a>
                 <div class="nav-toggle">
                     <button class="btn btn-toggle toggle-sidebar">
-                        <i class="gg-menu-right"></i>
-                    </button>
-                    <button class="btn btn-toggle sidenav-toggler">
-                        <i class="gg-menu-left"></i>
+                        <i class="fas fa-bars"></i>
                     </button>
                 </div>
                 <button class="topbar-toggler more">
-                    <i class="gg-more-vertical-alt"></i>
+                    <i class="fas fa-ellipsis-v"></i>
                 </button>
             </div>
             <!-- End Logo Header -->
@@ -63,12 +57,13 @@
             <div class="sidebar-content">
                 <ul class="nav nav-secondary">
                     <li class="nav-item active">
-                        <a data-bs-toggle="collapse" href="#dashboard" class="collapsed" aria-expanded="false">
-                            <i class="fas fa-home"></i>
+                        <a data-bs-toggle="collapse" class="collapsed" aria-expanded="false">
+                            <i class="fa-solid fa-list-check"></i>
                             <p>Projeler</p>
                         </a>
                     </li>
                     <li class="nav-section">
+                    </li>
                 </ul>
             </div>
         </div>
@@ -77,33 +72,14 @@
 
     <div class="main-panel">
         <div class="main-header">
-            <div class="main-header-logo">
-                <!-- Logo Header -->
-                <div class="logo-header" data-background-color="dark">
-                    <div class="nav-toggle">
-                        <button class="btn btn-toggle toggle-sidebar">
-                            <i class="gg-menu-right"></i>
-                        </button>
-                        <button class="btn btn-toggle sidenav-toggler">
-                            <i class="gg-menu-left"></i>
-                        </button>
-                    </div>
-                    <button class="topbar-toggler more">
-                        <i class="gg-more-vertical-alt"></i>
-                    </button>
-                </div>
-                <!-- End Logo Header -->
-            </div>
             <!-- Navbar Header -->
             <nav class="navbar navbar-header navbar-header-transparent navbar-expand-lg border-bottom">
                 <div class="container-fluid">
                     <ul class="navbar-nav topbar-nav ms-md-auto align-items-center">
                         <li class="nav-item topbar-user dropdown hidden-caret">
-                            <a class="dropdown-toggle profile-pic" data-bs-toggle="dropdown" href="#"
-                               aria-expanded="false">
+                            <a class="dropdown-toggle profile-pic" data-bs-toggle="dropdown" href="#" aria-expanded="false">
                                 <div class="avatar-sm">
-                                    <img src="{{asset('adminPanel/assets/img/profile.jpg')}}" alt="..."
-                                         class="avatar-img rounded-circle"/>
+                                    <img src="{{asset('adminPanel/assets/img/profile.jpg')}}" alt="..." class="avatar-img rounded-circle"/>
                                 </div>
                                 <span class="profile-username">
                                     <span class="op-7">Merhaba,</span>
