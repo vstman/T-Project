@@ -494,7 +494,7 @@
         </div>
 
         <div class="container">
-
+        @yield('content')
         </div>
 
         <footer class="footer">

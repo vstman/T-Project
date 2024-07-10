@@ -13,7 +13,8 @@ class PostController extends Controller
         return view('projectPanel.posts.index', compact('posts'));
     }
     public function admin_index(){
-        return view('adminPanel.layout.app');
+        $posts = Post::all();
+        return view('adminPanel.index', compact('posts'));
     }
     public function create(){
         return view('projectPanel.posts.create');
