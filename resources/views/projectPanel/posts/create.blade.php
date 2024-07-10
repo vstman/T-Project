@@ -2,17 +2,16 @@
 
 @section('content')
 
-<head>  
 <script src="https://cdn.ckeditor.com/ckeditor5/36.0.1/classic/ckeditor.js"></script>
 
-<style type='text/css'> 
+<style type='text/css'>
     .ck-editor__editable_inline
     {
         height:350px;
     }
 
 </style>
-</head>
+
 
 <form action="{{route('posts_addpost')}}" method="POST">
 

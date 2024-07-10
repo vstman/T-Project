@@ -17,34 +17,38 @@
     <!-- Core theme CSS (includes Bootstrap)-->
     <link href="{{asset('projectPanel/css/styles.css')}}" rel="stylesheet"/>
 
-        @yield('style_content')
+    @yield('style_content')
 
     <style>
         .footer {
             bottom: 0;
             width: 100%;
+            height: 100px;
             position: fixed;
         }
     </style>
 </head>
 <body>
-   <!-- Navigation-->
-<nav class="navbar navbar-light bg-light static-top">
+<!-- Navigation-->
+<nav class="navbar navbar-light bg-light static-top fixed-top">
     <div class="container">
-    <a class="navbar-brand" href="#">Turgut Özal Üniversitesi</a>
+        <a class="navbar-brand" href="#">Turgut Özal Üniversitesi</a>
     </div>
 </nav>
 
-<div class="container p-3">
+<div class="container " style="margin-top: 80px">
     @yield('content')
 </div>
-
+<div class="container">
+    @yield('footer-top')
+</div>
 <!-- Footer-->
 <footer class="footer bg-light">
     <div class="container">
+
         <div class="row">
-            <div class="col-lg-6 h-100 text-center text-lg-start my-auto">
-                <ul class="list-inline mb-2">
+            <div class="col-lg-6 text-center text-lg-start">
+                <ul class="list-inline">
                     <li class="list-inline-item"><a href="#">Hakkında</a></li>
                     <li class="list-inline-item">⋅</li>
                     <li class="list-inline-item"><a href="#">İletişim</a></li>
@@ -71,6 +75,7 @@
         </div>
     </div>
 </footer>
+
 <!-- Bootstrap core JS-->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
 <!-- Core theme JS-->
