@@ -17,7 +17,7 @@
     </style>
 
 
-    <form action="{{route('posts_addpost')}}" method="POST">
+    <form action="{{route('admin.posts.addpost')}}" method="POST">
 
         @csrf
 
@@ -40,7 +40,7 @@
                 {
                     ckfinder:
                         {
-                            uploadUrl: "{{ route('ckeditor.upload', ['_token' => csrf_token()]) }}"
+                            uploadUrl: "{{ route('admin.ckeditor.upload', ['_token' => csrf_token()]) }}"
 
                         }
                 })

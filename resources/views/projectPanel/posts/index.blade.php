@@ -7,8 +7,14 @@
                 <div class="card mb-3">
                     <div class="card-body d-flex flex-column">
                         <h5 class="card-title">{{$post->title}}</h5>
-                        <p class="card-text">{!! $post->content !!}</p>
+                        <p class="card-text">{!! Str::limit(strip_tags($post->content), 40) !!}</p>
                     </div>
+                    <a href="{{ route('posts.details', $post->id) }}" class="mt-auto ml-auto">
+                                    <button class="btn btn-warning btn-sm">Detay</button>
+                    </a>
+                    <a href="{{ route('posts.details', $post->id) }}" class="mt-auto ml-auto">
+                                    <button class="btn btn-warning btn-sm">Sil</button>
+                    </a>
                 </div>
             </div>
         @endforeach

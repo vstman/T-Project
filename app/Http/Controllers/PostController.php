@@ -55,4 +55,15 @@ class PostController extends Controller
             return response()->json(['fileName' => $fileName, 'uploaded'=> 1, 'url' => ($url)]);
         }
     }
+    public function details($id){
+        $post = Post::find($id);
+        return view('projectPanel.posts.detail' , compact('post'));
+    }
+    public function destroy($id)
+{
+    $post = Post::findOrFail($id);
+    $post->delete();
+
+    return redirect()->route('admin.index')->with('success', 'Başarıyla silindi.');
+}
 }

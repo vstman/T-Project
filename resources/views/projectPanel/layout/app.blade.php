@@ -31,7 +31,7 @@
 <!-- Navigation-->
 <nav class="navbar navbar-light bg-light static-top fixed-top">
     <div class="container">
-        <a class="navbar-brand" href="{{route('posts_main')}}">Turgut Özal Üniversitesi</a>
+        <a class="navbar-brand" href="{{route('posts.main')}}">Turgut Özal Üniversitesi</a>
     </div>
 </nav>
 

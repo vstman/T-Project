@@ -38,7 +38,7 @@
         ClassicEditor
             .create(document.querySelector('#post-textarea'), {
                 ckfinder: {
-                    uploadUrl: "{{ route('ckeditor.upload', ['_token' => csrf_token()]) }}"
+                    uploadUrl: "{{ route('admin.ckeditor.upload', ['_token' => csrf_token()]) }}"
                 }
             })
             .catch(error => {

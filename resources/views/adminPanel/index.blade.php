@@ -16,6 +16,7 @@
                     <th>İçerik</th>
                     <th>Yayın Tarihi</th>
                     <th>İşlemler</th>
+                    
                 </tr>
             </thead>
             <tbody>
@@ -26,6 +27,11 @@
                         <td>{{ $post->created_at->format('Y-m-d') }}</td>
                         <td>
                             <a href="{{ route('admin.posts.edit', $post->id) }}" class="btn btn-primary">Düzenle</a>
+                            <form action="{{ route('admin.posts.destroy', $post->id) }}" method="POST" style="display:inline;">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-danger">Sil</button>
+                            </form>
                         </td>
                     </tr>
                 @endforeach
