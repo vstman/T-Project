@@ -10,9 +10,7 @@
           integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <!-- CSS Files -->
 
-    <!-- CSS Files -->
-    <link rel="stylesheet" href="{{asset('adminPanel/assets/css/bootstrap.min.css')}}"/>
-    <link rel="stylesheet" href="{{asset('adminPanel/assets/css/plugins.min.css')}}"/>
+
     <link rel="stylesheet" href="{{asset('adminPanel/assets/css/kaiadmin.min.css')}}"/>
 
     <!-- FontAwesome for icons -->
@@ -60,33 +58,34 @@
                     </li>
                     <br>
                     <li class="nav-item submenu">
-    <a
-        data-bs-toggle="collapse"
-        href="#collapseExample"
-        class="collapsed"
-        aria-expanded="false"
-    >
-        <i class="fas fa-project-diagram"></i>
-        Projeler
-    </a>
-    <div id="collapseExample" class="collapse">
-        <ul class="nav nav-collapse">
-            <li>
-                <a href="{{ route('admin.posts.create') }}">Yeni Proje Ekle</a>
-            </li>
-            <li>
-                <a href="{{ route('admin.index') }}">Projeleri Yönet</a>
-            </li>
-        </ul>
-    </div>
-</li>
+                        <a
+                            data-bs-toggle="collapse"
+                            href="#collapseExample"
+                            class="collapsed"
+                            aria-expanded="false"
+                        >
+                            <i class="fas fa-project-diagram"></i>
+                            <p>Projeler</p>
+                        </a>
+                        <div id="collapseExample" class="collapse">
+                            <ul class="nav nav-collapse">
+                                <li>
+                                    <a href="{{ route('admin.posts.create') }}">Yeni Proje Ekle</a>
+                                </li>
+                                <li>
+                                    <a href="{{ route('admin.index') }}">Projeleri Yönet</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
 
                     <br>
                     <li class="nav-item submenu">
                         <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                             @csrf
                         </form>
-                        <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" class="collapsed" aria-expanded="false">
+                        <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
+                           class="collapsed" aria-expanded="false">
                             <i class="fas fa-sign-out-alt"></i>
                             <p>Çıkış Yap</p>
                         </a>
