@@ -26,7 +26,7 @@
                         <td>{{ $post->created_at->format('Y-m-d') }}</td>
                         <td>
                             <a href="{{ route('admin.posts.edit', $post->id) }}" class="btn btn-primary">Düzenle</a>
-                            <a href="{{ route('posts.details', $post->id) }}" class="btn btn-primary">Detay</a>
+                            <a href="{{ route('admin.admin_details', $post->id) }}" class="btn btn-primary">Detay</a>
                             <button class="btn btn-danger" onclick="confirmDeletion('{{ route('admin.posts.destroy', $post->id) }}')">Sil</button>
                         </td>
                     </tr>

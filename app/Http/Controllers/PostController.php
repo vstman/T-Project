@@ -59,6 +59,10 @@ class PostController extends Controller
         $post = Post::find($id);
         return view('projectPanel.posts.detail' , compact('post'));
     }
+    public function admin_details($id){
+        $post = Post::find($id);
+        return view('adminPanel.detail' , compact('post'));
+    }
     public function destroy($id)
 {
     $post = Post::findOrFail($id);
