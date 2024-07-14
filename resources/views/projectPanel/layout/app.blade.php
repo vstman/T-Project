@@ -30,7 +30,10 @@
 <body>
 <!-- Navigation-->
 <nav class="navbar navbar-light bg-light static-top fixed-top">
-    <div class="container">
+<form action="{{route('posts.search')}}" class="search order-lg-3 order-md-2 order-3 ml-auto">
+                <input id="search-query" name="query" value="{{Request('query')}}" type="search" placeholder="Ara..." >
+        </form>    
+<div class="container">
         <a class="navbar-brand" href="{{route('posts.main')}}">Turgut Özal Üniversitesi</a>
     </div>
 </nav>

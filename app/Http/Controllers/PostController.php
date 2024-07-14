@@ -66,4 +66,30 @@ class PostController extends Controller
 
     return redirect()->route('admin.index')->with('success', 'Başarıyla silindi.');
 }
+public function search(Request $request)
+    {
+        $query = $request->query('query');
+
+        if ($query && strlen($query) >= 2) {
+            $searchValues = preg_split('/\s+/', $query, -1, PREG_SPLIT_NO_EMPTY);
+            $posts = Post::query();
+
+            $posts->where(function($q) use ($searchValues) {
+                foreach ($searchValues as $value) {
+                    $q->orWhere('title', 'LIKE', "%{$value}%");
+                }
+            });
+
+            $posts = $posts->paginate(6); // Sayfalama
+
+            $data = [
+                'pageTitle' => 'Search for :: ' . $request->query('query'),
+                'posts' => $posts
+            ];
+
+            return view('projectPanel.posts.search', $data);
+        } else {
+            return abort(404);
+        }
+    }
 }
