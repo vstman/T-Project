@@ -11,26 +11,28 @@
 
         <table id="example" class="table table-striped" style="width:100%">
             <thead>
-                <tr>
-                    <th>Başlık</th>
-                    <th>İçerik</th>
-                    <th>Yayın Tarihi</th>
-                    <th>İşlemler</th>
-                </tr>
+            <tr>
+                <th>Başlık</th>
+                <th>İçerik</th>
+                <th>Yayın Tarihi</th>
+                <th>İşlemler</th>
+            </tr>
             </thead>
             <tbody>
-                @foreach($posts as $post)
-                    <tr>
-                        <td>{{ $post->title }}</td>
-                        <td>{!! Str::limit(strip_tags($post->content), 40) !!}</td>
-                        <td>{{ $post->created_at->format('Y-m-d') }}</td>
-                        <td>
-                            <a href="{{ route('admin.posts.edit', $post->id) }}" class="btn btn-primary">Düzenle</a>
-                            <a href="{{ route('posts.details', $post->id) }}" class="btn btn-primary">Detay</a>
-                            <button class="btn btn-danger" onclick="confirmDeletion('{{ route('admin.posts.destroy', $post->id) }}')">Sil</button>
-                        </td>
-                    </tr>
-                @endforeach
+            @foreach($posts as $post)
+                <tr>
+                    <td>{{ $post->title }}</td>
+                    <td>{!! Str::limit(strip_tags($post->content), 40) !!}</td>
+                    <td>{{ $post->created_at->format('Y-m-d') }}</td>
+                    <td>
+                        <a href="{{ route('admin.posts.edit', $post->id) }}" class="btn btn-success">Düzenle</a>
+                        <a href="{{ route('admin.admin_details', $post->id) }}" class="btn btn-secondary">Detay</a>
+                        <button class="btn btn-danger"
+                                onclick="confirmDeletion('{{ route('admin.posts.destroy', $post->id) }}')">Sil
+                        </button>
+                    </td>
+                </tr>
+            @endforeach
             </tbody>
         </table>
     </div>
@@ -38,14 +40,25 @@
     <!-- SweetAlert2 -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
+    <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"
             integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
-    <script defer src="//cdn.datatables.net/2.0.8/js/dataTables.min.js"></script>
+
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" href="//cdn.datatables.net/1.11.4/css/jquery.dataTables.min.css">
+
+
+    <!-- DataTables JS -->
+    <script defer src="//cdn.datatables.net/1.11.4/js/jquery.dataTables.min.js"></script>
+
     <script>
         $(document).ready(function () {
             $('#example').DataTable({
-                "columnDefs": [
-                    {"orderable": false, "targets": 3} // Disable sorting on the 'Edit' and 'Delete' columns
+                language: {
+                    url: '{{ asset('/lang/tr.json') }}', // Dil dosyasının yolunu doğru bir şekilde belirtin
+                },
+                columnDefs: [
+                    {orderable: false, targets: 3} // 'Düzenle' ve 'Sil' sütunlarında sıralamayı devre dışı bırak
                 ]
             });
         });
@@ -68,7 +81,7 @@
                             _method: 'DELETE',
                             _token: '{{ csrf_token() }}'
                         },
-                        success: function(result) {
+                        success: function (result) {
                             Swal.fire(
                                 'Silindi!',
                                 'Öğe başarıyla silindi.',
@@ -77,7 +90,7 @@
                                 location.reload();
                             });
                         },
-                        error: function(result) {
+                        error: function (result) {
                             Swal.fire(
                                 'Hata!',
                                 'Öğe silinirken bir hata oluştu.',
