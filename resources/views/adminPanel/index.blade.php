@@ -12,18 +12,31 @@
         <table id="example" class="table table-striped" style="width:100%">
             <thead>
             <tr>
+                <th>Destekleyen Kurum</th>
                 <th>Başlık</th>
-                <th>İçerik</th>
-                <th>Yayın Tarihi</th>
-                <th>İşlemler</th>
+                <th>Kod</th>
+
+                <th>Yürüten</th>
+                <th>Departman</th>
+                
+                
+                <th>Proje Süresi</th>
+                
+                <th>Bütçe</th>
+                <th>Ekip</th>
             </tr>
+
             </thead>
             <tbody>
             @foreach($posts as $post)
                 <tr>
-                    <td>{{ $post->title }}</td>
-                    <td>{!! Str::limit(strip_tags($post->content), 40) !!}</td>
-                    <td>{{ $post->created_at->format('Y-m-d') }}</td>
+                    <td>{{ $post->supporting_organization }}</td>
+                    <td>{{ $post->project_title }}</td>
+                    <td>{{ $post->project_code }}</td>
+                    <td>{{ $post->supervisor }}</td>
+                    <td>{{ $post->department }}</td>
+                    <td>{{ $post->duration }}</td>
+                    <td>{{ $post->budget }}</td>
                     <td>
                         <a href="{{ route('admin.posts.edit', $post->id) }}" class="btn btn-success">Düzenle</a>
                         <a href="{{ route('admin.admin_details', $post->id) }}" class="btn btn-secondary">Detay</a>

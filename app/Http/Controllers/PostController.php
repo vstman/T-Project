@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Post;
+use App\Models\TeamMember;
 
 class PostController extends Controller
 {
@@ -20,14 +21,32 @@ class PostController extends Controller
         return view('projectPanel.posts.create');
     }
 
-    public function addPost(Request $request){
-        $post = new Post();
-        $post->user_id = Auth::id();
-        $post->title = $request->post_title;
-        $post->content = $request->post_content;
-        $post->save();
-        return redirect()->route('admin.index');
+    public function addPost(Request $request)
+{
+    $post = new Post();
+    $post->supporting_organization = $request->supporting_organization;
+    $post->project_title = $request->project_title;
+    $post->project_code = $request->project_code;
+    $post->supervisor = $request->supervisor;
+    $post->department = $request->department;
+    $post->duration = $request->duration;
+    $post->budget = $request->budget;
+    
+    $post->save();
+
+    // Ekibi kaydetmek için
+    $teamMembers = [];
+    foreach ($request->team_name as $key => $teamName) {
+        $teamMembers[] = new TeamMember([
+            'name' => $teamName,
+            'position' => $request->team_position[$key],
+            'department' => $request->team_department[$key],
+        ]);
     }
+    $post->teamMembers()->saveMany($teamMembers);
+
+    return redirect()->route('admin.index');
+}
 
     public function edit($id){
         $post = Post::find($id);
@@ -80,7 +99,7 @@ public function search(Request $request)
 
             $posts->where(function($q) use ($searchValues) {
                 foreach ($searchValues as $value) {
-                    $q->orWhere('title', 'LIKE', "%{$value}%");
+                    $q->orWhere('project_title', 'LIKE', "%{$value}%");
                 }
             });
 

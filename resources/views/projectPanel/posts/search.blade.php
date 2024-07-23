@@ -6,7 +6,7 @@
             <div class="col-md-3">
                 <div class="card mb-3">
                     <div class="card-body d-flex flex-column">
-                        <h5 class="card-title">{{$post->title}}</h5>
+                        <h5 class="card-title">{{$post->project_title}}</h5>
                         <p class="card-text">{!! Str::limit(strip_tags($post->content), 40) !!}</p>
                     </div>
                     <a href="{{ route('posts.details', $post->id) }}" class="mt-auto ml-auto">

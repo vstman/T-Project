@@ -37,14 +37,8 @@ Route::get('/logout', [AuthManager::class, 'logout'])->name('logout');
 
 
 // Post İşlemleri Başlangıç
-<<<<<<< HEAD
 Route::get('/' , [PostController::class , 'index'])->name('posts.main');
 Route::get('/posts' , [PostController::class , 'index'])->name('posts.index');
 Route::get('/details/{id}' , [PostController::class , 'details'])->name('posts.details');
 Route::get('/posts/search', [PostController::class, 'search'])->name('posts.search');
-=======
-Route::get('/', [PostController::class, 'index'])->name('posts.main');
-Route::get('/posts', [PostController::class, 'index'])->name('posts.index');
-Route::get('/details/{id}', [PostController::class, 'details'])->name('posts.details');
->>>>>>> f00d9a913db9d357122496df229a1bb617940d85
 // Post İşlemleri Bitiş

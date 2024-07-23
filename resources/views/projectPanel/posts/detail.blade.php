@@ -10,8 +10,8 @@
     <title>Document</title>
 </head>
 <body>
-    <h2>{{$post-> title}}</h2>
-    {!! $post -> content !!}
+    <h2>{{$post->project_title}}</h2>
+    {!! $post->supervisor !!}
     <br>
     <p>Yayinlanma Tarihi : </p>
     <p>{{ $post->created_at->format('Y-m-d') }}</p>

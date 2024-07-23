@@ -12,8 +12,17 @@ class Post extends Model
     protected $table = 'posts';
     protected $primaryKey = 'id';
     protected $fillable = [
-        'user_id',
-        'title',
-        'content'
+        'supporting_organization',
+        'project_title',
+        'project_code',
+        'supervisor',
+        'department',
+        'duration',
+        'budget'
     ];
+
+    public function teamMembers()
+    {
+        return $this->hasMany(TeamMember::class);
+    }
 }
