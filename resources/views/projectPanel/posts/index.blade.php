@@ -10,7 +10,7 @@
                         <p class="card-text">{!! Str::limit(strip_tags($post->content), 40) !!}</p>
                     </div>
                     <a href="{{ route('posts.details', $post->id) }}" class="mt-auto ml-auto">
-                                    <button class="btn btn-warning btn-sm">Detay</button>
+                                    <button class="btn btn-warning btn-sm m-2">Detay</button>
                     </a>
                     <a href="{{ route('posts.details', $post->id) }}" class="mt-auto ml-auto">
                     </a>

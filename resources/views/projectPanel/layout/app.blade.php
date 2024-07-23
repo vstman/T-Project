@@ -25,27 +25,51 @@
             width: 100%;
             position: fixed;
         }
+
+        /* Arama formu stilleri */
+        .search-form {
+            display: flex;
+            align-items: center;
+            margin-top: 10px;
+        }
+        .search-form input[type="search"] {
+            border-radius: 20px 0 0 20px;
+            border: 1px solid #ced4da;
+            padding: 10px;
+            width: 250px;
+        }
+        .search-form button {
+            border-radius: 0 20px 20px 0;
+            border: 1px solid #ced4da;
+            padding: 10px 15px;
+            background-color: #007bff;
+            color: white;
+            border-left: 0;
+        }
+        .search-form button:hover {
+            background-color: #0056b3;
+        }
     </style>
 </head>
 <body>
 <!-- Navigation-->
 <nav class="navbar navbar-light bg-light static-top fixed-top">
-<form action="{{route('posts.search')}}" class="search order-lg-3 order-md-2 order-3 ml-auto">
-                <input id="search-query" name="query" value="{{Request('query')}}" type="search" placeholder="Ara..." >
-        </form>    
-<div class="container">
+    <div class="container">
         <a class="navbar-brand" href="{{route('posts.main')}}">Turgut Özal Üniversitesi</a>
+        <form action="{{route('posts.search')}}" class="search-form ml-auto">
+            <input id="search-query" name="query" value="{{Request('query')}}" type="search" placeholder="Ara..." required>
+            <button type="submit"><i class="bi-search"></i></button>
+        </form>
     </div>
 </nav>
 
-<div class="container " style="margin-top: 80px">
+<div class="container" style="margin-top: 80px">
     @yield('content')
 </div>
 
 <!-- Footer-->
 <footer class="footer bg-light">
     <div class="container">
-
         <div class="row">
             <div class="col-lg-6 text-center text-lg-start">
                 <ul class="list-inline">
