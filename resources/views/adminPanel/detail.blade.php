@@ -36,7 +36,7 @@
             @if ($post->teamMembers->isNotEmpty())
 
                 <tr class="team-template">
-                    <td rowspan="2">
+                    <td rowspan="{{ $post->teamMembers->count() }}">
                         <label for="team" class="col-form-label">Proje Ekibi:</label>
                     </td>
                 @foreach ($post->teamMembers as $teamMember)

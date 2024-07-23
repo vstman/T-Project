@@ -62,10 +62,32 @@ class PostController extends Controller
     public function update(Request $request, $id)
     {
         $post = Post::find($id);
-        $post->title = $request->post_title;
-        $post->content = $request->post_content;
+        $post->project_title = $request->project_title;
+        $post->project_code = $request->project_code;
+        $post->supporting_organization = $request->supporting_organization;
+        $post->supervisor = $request->supervisor;
+        $post->department = $request->department;
+        $post->duration = $request->duration;
+        $post->budget = $request->budget;
+
         $post->save();
-        return redirect()->route('admin.index');
+
+        // Mevcut takım üyelerini sil
+        $post->teamMembers()->delete();
+
+        // Yeni takım üyelerini ekle
+        if ($request->has('team_name')) {
+            foreach ($request->team_name as $index => $name) {
+                if (!empty($name)) {
+                    $post->teamMembers()->create([
+                        'name' => $name,
+                        'position' => $request->team_position[$index] ?? null,
+                        'department' => $request->team_department[$index] ?? null,
+                    ]);
+                }
+            }
+        }
+        return redirect()->route('admin.index')->with('success', 'Post güncellendi.');
     }
 
     public function upload(Request $request)
