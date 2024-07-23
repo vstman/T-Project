@@ -18,7 +18,7 @@ class PostController extends Controller
         return view('adminPanel.index', compact('posts'));
     }
     public function create(){
-        return view('projectPanel.posts.create');
+        return view('adminPanel.create');
     }
 
     public function addPost(Request $request)
@@ -31,7 +31,7 @@ class PostController extends Controller
     $post->department = $request->department;
     $post->duration = $request->duration;
     $post->budget = $request->budget;
-    
+
     $post->save();
 
     // Ekibi kaydetmek için
