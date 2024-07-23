@@ -14,7 +14,7 @@
         <tbody id="project-table-body">
             <tr>
                 <td><label for="supporting-organization" class="col-form-label">Proje Destekleyen Kurum:</label></td>
-                <td><input type="text" class="form-control" id="supporting-organization" name="supporting_organization"></td>
+                <td colspan="2"><input type="text" class="form-control" id="supporting-organization" name="supporting_organization"></td>
             </tr>
             <tr>
                 <td><label for="project-title" class="col-form-label">Proje Adı ve kodu:</label></td>
@@ -32,24 +32,40 @@
                         <input type="text" class="form-control mb-2" id="supervisor" name="supervisor" placeholder="Unvan Ad Soyad">
                     </div>
                 </td>
-                <td><textarea class="form-control" id="department" name="department" rows="2" placeholder="Yürütücü Bölüm"></textarea></td>
+                <td><textarea class="form-control" id="department" name="department" rows="5" placeholder="Yürütücü Bölüm"></textarea></td>
             </tr>
             <tr class="team-template">
-                <td><label for="team" class="col-form-label">Proje Ekibi:</label></td>
-                <td><input class="form-control" name="team_name[]" placeholder="Ad Soyad"></td>
-                <td><input class="form-control" name="team_position[]" placeholder="Görevi"></td>
-                <td><input class="form-control" name="team_department[]" placeholder="Üniversite Bölüm"></td>
+                <td>
+                    <label for="team" class="col-form-label">Proje Ekibi:</label>
+
+                </td>
+
+
+                <td colspan="1">
+                    <div class="row">
+                        <div class="col">
+                            <input class="form-control" name="team_name[]" placeholder="Ad Soyad">
+                        </div>
+                        <div class="col">
+                            <input class="form-control" name="team_position[]" placeholder="Görevi">
+                        </div>
+                    </div>
+                </td>
+                <td><input class="form-control" name="team_department[]" placeholder="Üniversite Bölüm">
+                </td>
             </tr>
-            <tr>
-                <td colspan="4"><button type="button" class="btn btn-primary" id="add-team-member">Ekip Üyesi Ekle</button></td>
-            </tr>
+<tr>
+    <td colspan="4"> <button type="button" class="btn btn-primary btn-sm" id="add-team-member">
+            <i class="fa-solid fa-plus"></i>
+        </button></td>
+</tr>
             <tr>
                 <td><label for="duration" class="col-form-label">Proje Süresi:</label></td>
-                <td><input type="text" class="form-control" id="duration" name="duration"></td>
+                <td colspan="2"><input type="text" class="form-control" id="duration" name="duration"></td>
             </tr>
             <tr>
                 <td><label for="budget" class="col-form-label">Proje Bütçesi:</label></td>
-                <td><input type="text" class="form-control" id="budget" name="budget"></td>
+                <td colspan="2"><input type="text" class="form-control" id="budget" name="budget"></td>
             </tr>
         </tbody>
     </table>
