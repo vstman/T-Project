@@ -49,6 +49,9 @@
         .search-form button:hover {
             background-color: #0056b3;
         }
+        label {
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>

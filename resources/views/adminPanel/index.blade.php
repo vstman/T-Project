@@ -23,7 +23,7 @@
                 <th>Proje Süresi</th>
 
                 <th>Bütçe</th>
-                <th>Ekip</th>
+                <th>İşlemler</th>
             </tr>
 
             </thead>

@@ -60,11 +60,11 @@
         </button></td>
 </tr>
             <tr>
-                <td><label for="duration" class="col-form-label">Proje Süresi:</label></td>
+                <td><label for="duration" class="col-form-label">Proje Süresi(Ay):</label></td>
                 <td colspan="2"><input type="text" class="form-control" id="duration" name="duration"></td>
             </tr>
             <tr>
-                <td><label for="budget" class="col-form-label">Proje Bütçesi:</label></td>
+                <td><label for="budget" class="col-form-label">Proje Bütçesi(TL):</label></td>
                 <td colspan="2"><input type="text" class="form-control" id="budget" name="budget"></td>
             </tr>
         </tbody>
