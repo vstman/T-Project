@@ -2,13 +2,12 @@
 
 @section('content')
 
-    <a href="{{ route('admin.index') }}" class="btn btn-warning">
-        <i class="fas fa-arrow-left"></i> Geri
-    </a>
-    <br>
-    <br>
-
     <div class="container">
+        <a href="{{ route('posts.index') }}" class="btn btn-warning">
+            <i class="fas fa-arrow-left"></i> Geri
+        </a>
+        <br>
+        <br>
 
         <table class="table table-bordered">
             <tbody id="project-table-body">
@@ -35,7 +34,7 @@
 
             @if ($post->teamMembers->isNotEmpty())
                 <tr class="team-template">
-                    <td rowspan="2">
+                    <td rowspan="{{ $post->teamMembers->count() }}">
                         <label for="team" class="col-form-label">Proje Ekibi:</label>
                     </td>
                     @foreach ($post->teamMembers as $teamMember)
