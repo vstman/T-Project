@@ -27,31 +27,55 @@ class PostController extends Controller
     }
 
     public function addPost(Request $request)
-    {
-        $post = new Post();
-        $post->supporting_organization = $request->supporting_organization;
-        $post->project_title = $request->project_title;
-        $post->project_code = $request->project_code;
-        $post->supervisor = $request->supervisor;
-        $post->department = $request->department;
-        $post->duration = $request->duration;
-        $post->budget = $request->budget;
+{
+    // Verileri doğrulama
+    $validated = $request->validate([
+        'supporting_organization' => 'required|string|max:255',
+        'project_title' => 'required|string|max:255',
+        'project_code' => 'required|string|max:50',
+        'supervisor' => 'required|string|max:255',
+        'department' => 'required|string',
+        'duration' => 'required|integer',
+        'budget' => 'required|numeric',
+        'supervisor_photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', 
+        'team_name' => 'required|array|min:1', 
+        'team_name.*' => 'required|string|max:255', 
+        'team_position.*' => 'nullable|string|max:255',
+        'team_department.*' => 'nullable|string|max:255', 
+    ]);
 
-        $post->save();
+    $post = new Post();
+    $post->supporting_organization = $validated['supporting_organization'];
+    $post->project_title = $validated['project_title'];
+    $post->project_code = $validated['project_code'];
+    $post->supervisor = $validated['supervisor'];
+    $post->department = $validated['department'];
+    $post->duration = $validated['duration'];
+    $post->budget = $validated['budget'];
 
-        // Ekibi kaydetmek için
-        $teamMembers = [];
-        foreach ($request->team_name as $key => $teamName) {
-            $teamMembers[] = new TeamMember([
-                'name' => $teamName,
-                'position' => $request->team_position[$key],
-                'department' => $request->team_department[$key],
-            ]);
-        }
-        $post->teamMembers()->saveMany($teamMembers);
-
-        return redirect()->route('admin.index');
+    // Resim dosyasını yükleme işlemi
+    if ($request->hasFile('supervisor_photo')) {
+        $file = $request->file('supervisor_photo');
+        $filename = time() . '.' . $file->getClientOriginalExtension();
+        $filePath = $file->storeAs('uploads/supervisors', $filename, 'public');
+        $post->supervisor_photo = '/storage/' . $filePath;
     }
+
+    $post->save();
+
+    $teamMembers = [];
+    foreach ($validated['team_name'] as $key => $teamName) {
+        $teamMembers[] = new TeamMember([
+            'name' => $teamName,
+            'position' => $validated['team_position'][$key] ?? null, 
+            'department' => $validated['team_department'][$key] ?? null, 
+        ]);
+    }
+    $post->teamMembers()->saveMany($teamMembers);
+
+    return redirect()->route('admin.index')->with('success', 'Post başarıyla oluşturuldu.');
+}
+
 
     public function edit($id)
     {

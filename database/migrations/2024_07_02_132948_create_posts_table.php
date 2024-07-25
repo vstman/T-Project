@@ -20,6 +20,7 @@ return new class extends Migration
             $table->text('department');
             $table->string('duration');
             $table->decimal('budget', 15, 2); 
+            $table->string('supervisor_photo'); 
             $table->timestamps(); 
         });
     }
