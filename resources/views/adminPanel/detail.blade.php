@@ -25,7 +25,7 @@
                 <td>
                     <div class="d-flex flex-column">
                         <div class="d-flex align-items-center mb-2">
-                            <img id="supervisor-photo" src="{{ asset('path/to/default/image.png') }}" alt="Supervisor Photo" class="img-thumbnail mr-2" width="100" height="100">
+                            <img id="supervisor-photo" src="{{ asset($post->supervisor_photo ?? 'image.png') }}" alt="Supervisor Photo" class="img-thumbnail mr-2" width="100" height="100">
                         </div>
                         <p id="supervisor">{{ $post->supervisor }}</p>
                     </div>
