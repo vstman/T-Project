@@ -122,6 +122,8 @@ class PostController extends Controller
         $post = Post::findOrFail($id);
         $post->delete();
 
+        TeamMember::where('post_id', $id)->delete();
+
         return redirect()->route('admin.index')->with('success', 'Başarıyla silindi.');
     }
 
