@@ -1,6 +1,7 @@
 @extends('projectPanel.layout.app')
 
 @section('content')
+    <div style="margin-top: 50px;">
     <a href="{{ route('posts.main') }}" class="btn btn-warning">
         <i class="fas fa-arrow-left"></i> Geri
     </a>
@@ -28,7 +29,7 @@
             @endforeach
         </div>
     @endif
-
+    </div>
     <div class="container">
         <div class="col-md-12 d-flex justify-content-between">
             <div>
