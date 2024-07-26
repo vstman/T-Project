@@ -21,6 +21,12 @@
         label {
             font-weight: bold;
         }
+        .fixed-size {
+            width: 200px;
+            height: 200px;
+            object-fit: cover; /* Resmi kutuya sığdırmak için */
+        }
+
     </style>
 </head>
 <body>
@@ -84,6 +90,18 @@
                             </ul>
                         </div>
                     </li>
+                    <br>
+                    <li class="nav-item submenu">
+                        <form id="navigate-form" action="{{ route('posts.main') }}" method="GET" style="display: none;">
+                            @csrf
+                        </form>
+                        <a href="#" onclick="event.preventDefault(); document.getElementById('navigate-form').submit();"
+                           class="collapsed" aria-expanded="false">
+                            <i class="fas fa-home"></i>
+                            <p>Siteye Git</p>
+                        </a>
+                    </li>
+
 
                     <br>
                     <li class="nav-item submenu">

@@ -26,7 +26,7 @@
                         <td>
                             <div class="d-flex flex-column">
                                 <div class="d-flex align-items-center mb-2">
-                                    <img id="supervisor-photo" src="{{ asset($post->supervisor_photo ?? 'image.png') }}" alt="Supervisor Photo" class="img-thumbnail mr-2" width="100" height="100">
+                                    <img id="supervisor-photo" src="{{ asset($post->supervisor_photo ?? 'image.png') }}" class="img-thumbnail mr-2 fixed-size" width="100" height="100">
                                     <input type="file" class="form-control-file" id="photo-input" accept="image/*" name="supervisor_photo" onchange="previewImage(event)">
                                 </div>
                                 <input type="text" class="form-control mb-2" id="supervisor" name="supervisor" placeholder="Unvan Ad Soyad" value="{{ $post->supervisor }}">

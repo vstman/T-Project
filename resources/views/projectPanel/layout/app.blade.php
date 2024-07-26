@@ -52,6 +52,15 @@
         label {
             font-weight: bold;
         }
+        .fixed-size {
+            width: 200px;
+            height: 200px;
+            object-fit: cover; /* Resmi kutuya sığdırmak için */
+        }
+        .narrow-column {
+            width: 200px; /* İhtiyacınıza göre genişliği ayarlayın */
+            white-space: nowrap;
+        }
     </style>
 </head>
 <body>

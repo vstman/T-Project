@@ -110,9 +110,7 @@
                            placeholder="Şifre">
                 </div>
                 <div class="form-group form-remember">
-                    <input type="checkbox" id="remember" name="remember">
-                    <label for="remember">Beni Hatırla</label>
-                    <a href="" class="forgot-link">Şifremi Unuttum?</a>
+                    <a href="{{route('register')}}" class="forgot-link">Kayıt Ol</a>
                 </div>
                 <button type="submit" class="btn btn-primary">GİRİŞ YAP</button>
             </form>

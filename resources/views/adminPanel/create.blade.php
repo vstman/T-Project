@@ -24,7 +24,7 @@
                     <td>
                         <div class="d-flex flex-column">
                             <div class="d-flex align-items-center mb-2">
-                                <img id="supervisor-photo" src="image.png" alt="Supervisor Photo" class="img-thumbnail mr-2" width="100" height="100">
+                                <img id="supervisor-photo" class="img-thumbnail mr-2 fixed-size" width="100" height="100">
                                 <input type="file" class="form-control-file" id="photo-input" name="supervisor_photo" accept="image/*" onchange="previewImage(event)">
                             </div>
                             <input type="text" class="form-control mb-2" id="supervisor" name="supervisor" placeholder="Unvan Ad Soyad">
@@ -47,7 +47,7 @@
                     <td><input class="form-control" name="team_department[]" placeholder="Üniversite Bölüm"></td>
                 </tr>
                 <tr>
-                    <td colspan="4"> 
+                    <td colspan="4">
                         <button type="button" class="btn btn-primary btn-sm" id="add-team-member">
                             <i class="fa-solid fa-plus"></i>
                         </button>

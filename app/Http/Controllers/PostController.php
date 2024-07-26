@@ -37,11 +37,11 @@ class PostController extends Controller
         'department' => 'required|string',
         'duration' => 'required|integer',
         'budget' => 'required|numeric',
-        'supervisor_photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', 
-        'team_name' => 'required|array|min:1', 
-        'team_name.*' => 'required|string|max:255', 
+        'supervisor_photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+        'team_name' => 'required|array|min:1',
+        'team_name.*' => 'required|string|max:255',
         'team_position.*' => 'nullable|string|max:255',
-        'team_department.*' => 'nullable|string|max:255', 
+        'team_department.*' => 'nullable|string|max:255',
     ]);
 
     $post = new Post();
@@ -57,7 +57,7 @@ class PostController extends Controller
     if ($request->hasFile('supervisor_photo')) {
         $file = $request->file('supervisor_photo');
         $filename = time() . '.' . $file->getClientOriginalExtension();
-        $filePath = $file->storeAs('uploads/supervisors', $filename, 'public');
+        $filePath = $file->storeAs('image', $filename, 'public');
         $post->supervisor_photo = '/storage/' . $filePath;
     }
 
@@ -67,8 +67,8 @@ class PostController extends Controller
     foreach ($validated['team_name'] as $key => $teamName) {
         $teamMembers[] = new TeamMember([
             'name' => $teamName,
-            'position' => $validated['team_position'][$key] ?? null, 
-            'department' => $validated['team_department'][$key] ?? null, 
+            'position' => $validated['team_position'][$key] ?? null,
+            'department' => $validated['team_department'][$key] ?? null,
         ]);
     }
     $post->teamMembers()->saveMany($teamMembers);
@@ -94,11 +94,11 @@ class PostController extends Controller
         'department' => 'required|string',
         'duration' => 'required|integer',
         'budget' => 'required|numeric',
-        'supervisor_photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', 
-        'team_name' => 'required|array|min:1', 
-        'team_name.*' => 'required|string|max:255', 
+        'supervisor_photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+        'team_name' => 'required|array|min:1',
+        'team_name.*' => 'required|string|max:255',
         'team_position.*' => 'nullable|string|max:255',
-        'team_department.*' => 'nullable|string|max:255', 
+        'team_department.*' => 'nullable|string|max:255',
     ]);
 
     $post = Post::find($id);
@@ -111,9 +111,9 @@ class PostController extends Controller
     $post->duration = $validated['duration'];
     $post->budget = $validated['budget'];
 
-    
+
     if ($request->hasFile('supervisor_photo')) {
-    
+
         if ($post->supervisor_photo) {
             $oldPhotoPath = public_path('storage/' . $post->supervisor_photo);
             if (file_exists($oldPhotoPath)) {
@@ -135,7 +135,7 @@ class PostController extends Controller
 
     $post->teamMembers()->delete();
 
-   
+
     if ($request->has('team_name')) {
         foreach ($request->team_name as $index => $name) {
             if (!empty($name)) {
