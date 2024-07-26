@@ -9,24 +9,40 @@
     <!-- Favicon-->
     <link rel="icon" type="image/x-icon" href="{{asset('projectPanel/assets/favicon.ico')}}"/>
     <!-- Bootstrap icons-->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet"
-          type="text/css"/>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" type="text/css"/>
     <!-- Google fonts-->
-    <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic" rel="stylesheet"
-          type="text/css"/>
+    <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic" rel="stylesheet" type="text/css"/>
     <!-- Core theme CSS (includes Bootstrap)-->
     <link href="{{asset('projectPanel/css/styles.css')}}" rel="stylesheet"/>
 
     @yield('style_content')
 
     <style>
-        .footer {
-            bottom: 0;
-            width: 100%;
-            position: fixed;
+        html, body {
+            height: 100%;
+            margin: 0;
         }
-
-        /* Arama formu stilleri */
+        body {
+            display: flex;
+            flex-direction: column;
+        }
+        .content {
+            flex: 1;
+        }
+        .footer {
+            width: 100%;
+            position: relative;
+            bottom: 0;
+        }
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000; /* Ensures the navbar is above other content */
+        }
+        .container {
+            margin-top: 42px; /* Adjust this if your navbar height changes */
+        }
         .search-form {
             display: flex;
             align-items: center;
@@ -55,17 +71,17 @@
         .fixed-size {
             width: 200px;
             height: 200px;
-            object-fit: cover; /* Resmi kutuya sığdırmak için */
+            object-fit: cover;
         }
         .narrow-column {
-            width: 200px; /* İhtiyacınıza göre genişliği ayarlayın */
+            width: 200px;
             white-space: nowrap;
         }
     </style>
 </head>
 <body>
 <!-- Navigation-->
-<nav class="navbar navbar-light bg-light static-top fixed-top">
+<nav class="navbar navbar-light bg-light static-top fixed-top" style="margin-top: -37px;">
     <div class="container">
         <a class="navbar-brand" href="{{route('posts.main')}}">Turgut Özal Üniversitesi</a>
         <form action="{{route('posts.search')}}" class="search-form ml-auto">
@@ -75,7 +91,7 @@
     </div>
 </nav>
 
-<div class="container" style="margin-top: 80px">
+<div class="content container">
     @yield('content')
 </div>
 

@@ -1,7 +1,9 @@
 @extends('projectPanel.layout.app')
 
 @section('content')
-    <div class="row">
+
+    <div class="row" style="margin-top: 50px;">
+        <h1>Projelerimiz</h1>
         @foreach($posts as $post)
             <div class="col-md-3">
                 <div class="card mb-3">
