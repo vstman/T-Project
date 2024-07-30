@@ -126,7 +126,7 @@
             position: relative;
             transition: left 0.3s ease, color 0.3s ease; /* Geçiş özelliklerini tanımlıyoruz */
             left: 0; /* Başlangıç konumu */
-            height: 114px;
+            height: 158px;
         }
 
         .special-card:hover {
