@@ -2,44 +2,38 @@
 
 @section('style-content')
     <style>
+        @media screen and (max-width: 767px) {
+            .row {
+                margin-top: 86px !important;
+            }
+        }
+
         .card-body {
             display: flex;
             justify-content: center;
-            align-items: center; /* Center the content vertically */
+            align-items: center;
         }
 
         .card-body .title {
-            margin: 0; /* Remove margin between title and icon */
-            padding: 0 15px; /* Add padding between title and edges */
-            flex: 1; /* Ensure title takes up remaining space */
-            text-align: left; /* Align title to the left */
+            margin: 0;
+            padding: 0 15px;
+            flex: 1;
+            text-align: left;
         }
 
         .card-body .icon {
-            font-size: 1.5rem; /* Adjust icon size */
-            margin-left: auto; /* Push icon to the right */
-        }
-        .special-content {
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            height: 860px;
-        }
-
-        @media screen and (max-width: 770px) {
-            .special-content {
-                height: 100%;
-            }
+            font-size: 1.5rem;
+            margin-left: auto;
         }
     </style>
 @endsection
 
 @section('content')
-    <div class="special-content">
-        <div class="row mt-5">
-            <h1 class="col-12 mb-5 mt-2">Projelerimiz</h1>
+    <div class="row" style="margin-top: 50px;">
+        <h1 class="col-12 mb-5">Projelerimiz</h1>
+        <div id="results" class="row">
             @foreach($posts as $post)
-                <div class="col-md-3 mb-3">
+                <div class="col-md-3 mb-5">
                     <a href="{{ route('posts.details', $post->id) }}" class="card-link">
                         <div class="card mb-3 special-card">
                             <div class="card-body d-flex flex-column">
@@ -56,10 +50,34 @@
                 </div>
             @endforeach
         </div>
-        <div class="row mt-auto">
-            <div class="col-md-12 d-flex">
+    </div>
+    <div class="row">
+        <div class="col-md-12 d-flex">
+            <div>
                 {{ $posts->links() }}
             </div>
         </div>
     </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+    <script type="text/javascript">
+        $.ajaxSetup({ headers: { 'csrftoken' : '{{ csrf_token() }}' } });
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            $('#search').on('keyup', function() {
+                var value = $(this).val();
+                $.ajax({
+                    type: "GET",
+                    url: "{{ route('posts.search') }}",
+                    data: { search: value },
+                    success: function (data) {
+                        $('#results').html(data.html); // Inject the returned HTML
+                    }
+                });
+            });
+        });
+    </script>
 @endsection

@@ -190,34 +190,19 @@ class PostController extends Controller
     }
 
     public function search(Request $request)
-    {
-        $query = $request->query('query');
+{
+    if ($request->ajax()) {
+        $posts = Post::where('project_title', 'LIKE', '%'.$request->search.'%')
+                     ->orWhere('supporting_organization', 'LIKE', '%'.$request->search.'%')
+                     ->orWhere('project_code', 'LIKE', '%'.$request->search.'%')
+                     ->get();
 
-        // Boş veya 1 karakterden kısa sorguları kontrol et
-        if (empty($query) || strlen($query) < 2) {
-            return view('projectPanel.posts.search', [
-                'pageTitle' => 'Arama Sonuçları',
-                'posts' => new \Illuminate\Pagination\LengthAwarePaginator([], 0, 6) // Boş sayfalama nesnesi
-            ]);
-        }
+        $view = view('projectPanel.posts.partials.post-list', compact('posts'))->render();
 
-        $searchValues = preg_split('/\s+/', $query, -1, PREG_SPLIT_NO_EMPTY);
-        $postsQuery = Post::query();
-
-        $postsQuery->where(function($q) use ($searchValues) {
-            foreach ($searchValues as $value) {
-                $q->orWhere('project_title', 'LIKE', "%{$value}%");
-            }
-        });
-
-        $posts = $postsQuery->paginate(6); // Sayfalama
-
-        $data = [
-            'pageTitle' => 'Search for :: ' . $request->query('query'),
-            'posts' => $posts
-        ];
-
-        return view('projectPanel.posts.search', $data);
+        return response()->json(['html' => $view]);
     }
+
+    // Handle non-AJAX requests if necessary
+}
 
 }
