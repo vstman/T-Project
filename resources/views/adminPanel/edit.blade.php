@@ -1,12 +1,13 @@
 @extends('adminPanel.layout.app')
 
 @section('content')
-    <a href="{{ route('admin.index') }}" class="btn btn-warning">
-        <i class="fas fa-arrow-left"></i> Geri
-    </a>
-    <br>
-    <br>
+
     <div class="container">
+        <a href="{{ route('admin.index') }}" class="btn btn-warning">
+            <i class="fas fa-arrow-left"></i> Geri
+        </a>
+        <br>
+        <br>
         <form action="{{ route('admin.posts.update', ['id' => $post->id]) }}" method="POST" enctype="multipart/form-data">
             @csrf
             @method('PUT')

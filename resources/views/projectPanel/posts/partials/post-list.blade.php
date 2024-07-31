@@ -1,5 +1,5 @@
 @foreach($posts as $post)
-    <div class="col-md-3 mb-5">
+    <div class="col-md-3 mb-2">
         <a href="{{ route('posts.details', $post->id) }}" class="card-link">
             <div class="card mb-3 special-card">
                 <div class="card-body d-flex flex-column">
@@ -15,3 +15,4 @@
         </a>
     </div>
 @endforeach
+

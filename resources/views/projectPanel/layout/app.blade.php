@@ -47,7 +47,7 @@
 
         }
         .text-white{
-            color: #fffff !important;
+            color: #ffffff !important;
         }
         .navbar {
             position: fixed;
@@ -162,22 +162,21 @@
 <!-- Navigation-->
 <nav class="navbar navbar-light bg-light static-top fixed-top" style="margin-top: -37px;">
     <div class="container">
-        <a class="navbar-brand" href="{{route('posts.main')}}"></a>
+        <a class="navbar-brand" href="{{route('posts.main')}}">
         <img
             src="{{asset('projectPanel/assets/MTÜ LOGO 4.png')}}"
             alt="navbar brand"
             class="navbar-brand"
             height="50"
-        />
+        /></a>
         <form action="{{route('posts.search')}}" class="search-form ml-auto">
             <input id="search" name="search" type="search" placeholder="Ara..."
                    required>
-            <button disabled><i class="bi-search"></i></button>
         </form>
     </div>
 </nav>
 
-<div class="content container" style="display: flex;flex-direction: column;justify-content: space-between;">
+<div class="content container">
     @yield('content')
 </div>
 

@@ -2,13 +2,14 @@
 
 @section('content')
 
-    <a href="{{ route('admin.index') }}" class="btn btn-warning">
-        <i class="fas fa-arrow-left"></i> Geri
-    </a>
-    <br>
-    <br>
+
 
     <div class="container">
+        <a href="{{ route('admin.index') }}" class="btn btn-warning">
+            <i class="fas fa-arrow-left"></i> Geri
+        </a>
+        <br>
+        <br>
         <table class="table table-bordered">
             <tbody id="project-table-body">
             <tr>
@@ -75,7 +76,7 @@
         integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 
     <script>
-    
+
     function confirmDeletion(url) {
         Swal.fire({
             title: 'Bu öğeyi silmek istediğinize emin misiniz?',

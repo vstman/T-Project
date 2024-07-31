@@ -3,6 +3,7 @@
 @section('content')
 
     <div class="container">
+        <br>
         <a href="{{ route('posts.index') }}" class="btn btn-warning">
             <i class="fas fa-arrow-left"></i> Geri
         </a>
