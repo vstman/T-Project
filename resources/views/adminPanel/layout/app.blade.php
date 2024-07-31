@@ -38,10 +38,10 @@
             <div class="logo-header" data-background-color="dark">
                 <a href="{{route('admin.index')}}" class="logo">
                     <img
-                        src="{{asset('adminPanel/assets/img/test.webp')}}"
+                        src="{{asset('adminPanel/assets/img/MTÜ LOGO 4.png')}}"
                         alt="navbar brand"
                         class="navbar-brand"
-                        height="20"
+                        height="50"
                     />
                 </a>
                 <div class="nav-toggle">
@@ -52,6 +52,7 @@
                         <i class="gg-menu-left"></i>
                     </button>
                 </div>
+
             </div>
             <!-- End Logo Header -->
         </div>
@@ -92,11 +93,10 @@
                     </li>
                     <br>
                     <li class="nav-item submenu">
-                        <form id="navigate-form" action="{{ route('posts.main') }}" method="GET" style="display: none;">
+                        <form id="navigate-form" action="{{ route('posts.main') }}" method="GET" style="display: none;" target="_blank">
                             @csrf
                         </form>
-                        <a href="#" onclick="event.preventDefault(); document.getElementById('navigate-form').submit();"
-                           class="collapsed" aria-expanded="false">
+                        <a href="#" onclick="event.preventDefault(); openFormInNewTab();" class="collapsed" aria-expanded="false">
                             <i class="fas fa-home"></i>
                             <p>Siteye Git</p>
                         </a>
@@ -129,6 +129,12 @@
                         <button class="btn btn-toggle toggle-sidebar">
                             <i class="gg-menu-right"></i>
                         </button>
+                        <img
+                            src="{{asset('adminPanel/assets/img/MTÜ LOGO 4.png')}}"
+                            alt="navbar brand"
+                            class="navbar-brand"
+                            height="50"
+                        />
                         <button class="btn btn-toggle sidenav-toggler">
                             <i class="gg-menu-left"></i>
                         </button>
@@ -195,6 +201,13 @@
         // Dropdown menu toggle for small screens
         $('.dropdown-toggle').dropdown();
     });
+</script>
+<script>
+    function openFormInNewTab() {
+        var form = document.getElementById('navigate-form');
+        form.target = '_blank';
+        form.submit();
+    }
 </script>
 
 </body>

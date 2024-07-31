@@ -32,6 +32,9 @@
             display: flex;
             flex-direction: column;
         }
+        a{
+            text-decoration: none;
+        }
 
         .content {
             flex: 1;
@@ -41,8 +44,11 @@
             width: 100%;
             position: relative;
             bottom: 0;
-        }
 
+        }
+        .text-white{
+            color: #fffff !important;
+        }
         .navbar {
             position: fixed;
             top: 0;
@@ -71,7 +77,7 @@
             border-radius: 0 20px 20px 0;
             border: 1px solid #ced4da;
             padding: 10px 15px;
-            background-color: #007bff;
+            background-color: rgb(18 ,106 ,205);
             color: white;
             border-left: 0;
         }
@@ -96,7 +102,7 @@
         }
 
         .special-card {
-            border-left: solid #49a1ee 5px;
+            border-left: solid rgb(18 ,106 ,205) 5px;
         }
 
         .special-card {
@@ -113,7 +119,7 @@
             left: -100%; /* Başlangıçta kartın dışında */
             height: 100%;
             width: 100%;
-            background-color: #49a1ee;
+            background-color:rgb(18 ,106 ,205);
             transition: left 0.3s ease;
             z-index: 0;
         }
@@ -142,7 +148,12 @@
             text-decoration: none;
             color: inherit;
         }
-
+        .footer.text-white a {
+            color: #ffffff !important;
+        }
+        .bi-twitter::before,.bi-facebook::before,.bi-instagram::before{
+            color: #ffffff;
+        }
     </style>
 
     @yield('style-content')
@@ -151,7 +162,13 @@
 <!-- Navigation-->
 <nav class="navbar navbar-light bg-light static-top fixed-top" style="margin-top: -37px;">
     <div class="container">
-        <a class="navbar-brand" href="{{route('posts.main')}}">Turgut Özal Üniversitesi</a>
+        <a class="navbar-brand" href="{{route('posts.main')}}"></a>
+        <img
+            src="{{asset('projectPanel/assets/MTÜ LOGO 4.png')}}"
+            alt="navbar brand"
+            class="navbar-brand"
+            height="50"
+        />
         <form action="{{route('posts.search')}}" class="search-form ml-auto">
             <input id="search-query" name="query" value="{{Request('query')}}" type="search" placeholder="Ara..."
                    required>
@@ -165,37 +182,52 @@
 </div>
 
 <!-- Footer-->
-<footer class="footer bg-light">
+<footer class="footer bg-light text-white">
     <div class="container">
         <div class="row">
-            <div class="col-lg-6 text-center text-lg-start">
-                <ul class="list-inline">
-                    <li class="list-inline-item"><a href="#">Hakkında</a></li>
-                    <li class="list-inline-item">⋅</li>
-                    <li class="list-inline-item"><a href="#">İletişim</a></li>
-                    <li class="list-inline-item">⋅</li>
-                    <li class="list-inline-item"><a href="#">Kullanım Şartları</a></li>
-                    <li class="list-inline-item">⋅</li>
-                    <li class="list-inline-item"><a href="#">Gizlilik Politikası</a></li>
-                </ul>
-                <p class="text-muted small mb-4 mb-lg-0">&copy; Siteniz 2024. Tüm Hakları Saklıdır.</p>
+            <!-- Contact Information -->
+            <div class="col-lg-3 text-center text-lg-start">
+                <h5 class="text-uppercase mb-4"><strong>İLETİŞİM</strong></h5>
+                <p>Adres: Boran Mahallesi Kırkgöz Caddesi No: 82B- (Adres Kodu:-3712025703-) Battalgazi/MALATYA</p>
+                <p>Adres: İkizce Mahallesi İkizce Sokak No:100 P.K. 44900 Yeşilyurt / MALATYA</p>
+                <p>Yeşilyurt Santral: 0422 504 80 00 -06</p>
+                <p>Kep adresi: matu@hs01.kep.tr</p>
+                <p>Santral: (0422)846 12 55</p>
+                <p>(0422) 504 80 00-06</p>
+                <p>Fax: 0422 846 12 25</p>
+                <p>bilgi@ozal.edu.tr</p>
             </div>
-            <div class="col-lg-6 h-100 text-center text-lg-end my-auto">
-                <ul class="list-inline mb-0">
-                    <li class="list-inline-item me-4">
-                        <a href="#"><i class="bi-facebook fs-3"></i></a>
-                    </li>
-                    <li class="list-inline-item me-4">
-                        <a href="#"><i class="bi-twitter fs-3"></i></a>
-                    </li>
-                    <li class="list-inline-item">
-                        <a href="#"><i class="bi-instagram fs-3"></i></a>
-                    </li>
-                </ul>
+
+            <!-- University Information -->
+            <div class="col-lg-3 text-center text-lg-start">
+                <h5 class="text-uppercase mb-4">Malatya Turgut Özal Üniversitesi</h5>
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d30490.848460074623!2d38.35205404541401!3d38.466200927256274!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x40764bf28ac69bbf%3A0xaf9769e358c30948!2sMalatya+Turgut+%C3%96zal+%C3%9Cniversitesi!5e1!3m2!1str!2str!4v1556256830463!5m2!1str!2str" width="250" height="200" frameborder="0" style="border:0" allowfullscreen=""></iframe>
+            </div>
+
+            <!-- Social Media & Links -->
+            <div class="col-lg-3 text-center text-lg-start">
+                <h5 class="text-uppercase mb-4">Sosyal Medya</h5>
+                <a href="https://www.facebook.com/malatyaturgutozaledu/" class="me-3"><i class="bi-facebook fs-3" style="font-size: 30px; color: #000;"></i></a>
+                <a href="https://twitter.com/MTU_ozaledu" class="me-3"><i class="bi-twitter fs-3" style="font-size: 30px; color: #000;"></i></a>
+                <a href="https://www.instagram.com/malatyaturgutozaledu/"><i class="bi-instagram fs-3" style="font-size: 30px; color: #000;"></i></a>
+                <p class="mt-3"><a href="https://ozal.edu.tr/akademik-takvim/" target="_blank" rel="noopener">Akademik Takvim</a></p>
+                <p><a href="http://obs.ozal.edu.tr/" target="_blank" rel="noopener">Öğrenci Portalı</a></p>
+                <p><a href="http://pbs.ozal.edu.tr/" target="_blank" rel="noopener">Personel Bilgi Sistemi</a></p>
+                <p><a href="http://belge.ozal.edu.tr/account/auth/login/" target="_blank" rel="noopener">EBYS</a></p>
+                <p><a href="http://obs.ozal.edu.tr/oibs/login.aspx" target="_blank" rel="noopener">Öğrenci Bilgi Sistemi</a></p>
+                <p><a href="https://cabim.ulakbim.gov.tr/ekual/e-veri-tabanlari/" target="_blank" rel="noopener">Veri Tabanları</a></p>
+            </div>
+
+            <!-- Logo -->
+            <div class="col-lg-3 text-center text-lg-start">
+                <img src="https://ozal.edu.tr/wp-content/uploads/2023/12/OZAL-2-1-317x500-1-1-317x500.png" alt="Malatya Turgut Özal Üniversitesi" class="img-fluid" style="max-width: 100%;">
             </div>
         </div>
+
+
     </div>
 </footer>
+
 
 <!-- Bootstrap core JS-->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>

@@ -9,45 +9,42 @@
             </a>
         </div>
 
-        <table id="example" class="table table-striped" style="width:100%">
-            <thead>
-            <tr>
-                <th>Destekleyen Kurum</th>
-                <th>Başlık</th>
-                <th>Kod</th>
-
-                <th>Yürüten</th>
-                <th>Departman</th>
-
-
-                <th>Proje Süresi</th>
-
-                <th>Bütçe</th>
-                <th>İşlemler</th>
-            </tr>
-
-            </thead>
-            <tbody>
-            @foreach($posts as $post)
+        <div class="table-responsive">
+            <table id="example" class="table table-striped" style="width:100%">
+                <thead>
                 <tr>
-                    <td>{{ $post->supporting_organization }}</td>
-                    <td>{{ $post->project_title }}</td>
-                    <td>{{ $post->project_code }}</td>
-                    <td>{{ $post->supervisor }}</td>
-                    <td>{{ $post->department }}</td>
-                    <td>{{ $post->duration }}</td>
-                    <td>{{ $post->budget }}</td>
-                    <td>
-                        <a href="{{ route('admin.posts.edit', $post->id) }}" class="btn btn-success">Düzenle</a>
-                        <a href="{{ route('admin.admin_details', $post->id) }}" class="btn btn-secondary">Detay</a>
-                        <button class="btn btn-danger"
-                                onclick="confirmDeletion('{{ route('admin.posts.destroy', $post->id) }}')">Sil
-                        </button>
-                    </td>
+                    <th>Destekleyen Kurum</th>
+                    <th>Başlık</th>
+                    <th>Kod</th>
+                    <th>Yürüten</th>
+                    <th>Departman</th>
+                    <th>Proje Süresi</th>
+                    <th>Bütçe</th>
+                    <th>İşlemler</th>
                 </tr>
-            @endforeach
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                @foreach($posts as $post)
+                    <tr>
+                        <td>{{ $post->supporting_organization }}</td>
+                        <td>{{ $post->project_title }}</td>
+                        <td>{{ $post->project_code }}</td>
+                        <td>{{ $post->supervisor }}</td>
+                        <td>{{ $post->department }}</td>
+                        <td>{{ $post->duration }}</td>
+                        <td>{{ $post->budget }}</td>
+                        <td>
+                            <a href="{{ route('admin.posts.edit', $post->id) }}" class="btn btn-success">Düzenle</a>
+                            <a href="{{ route('admin.admin_details', $post->id) }}" class="btn btn-secondary">Detay</a>
+                            <button class="btn btn-danger"
+                                    onclick="confirmDeletion('{{ route('admin.posts.destroy', $post->id) }}')">Sil
+                            </button>
+                        </td>
+                    </tr>
+                @endforeach
+                </tbody>
+            </table>
+        </div>
     </div>
 
     <!-- SweetAlert2 -->
@@ -60,7 +57,6 @@
     <!-- DataTables CSS -->
     <link rel="stylesheet" href="//cdn.datatables.net/1.11.4/css/jquery.dataTables.min.css">
 
-
     <!-- DataTables JS -->
     <script defer src="//cdn.datatables.net/1.11.4/js/jquery.dataTables.min.js"></script>
 
@@ -71,7 +67,7 @@
                     url: '{{ asset('/lang/tr.json') }}', // Dil dosyasının yolunu doğru bir şekilde belirtin
                 },
                 columnDefs: [
-                    {orderable: false, targets: 3} // 'Düzenle' ve 'Sil' sütunlarında sıralamayı devre dışı bırak
+                    { orderable: false, targets: 7 } // 'İşlemler' sütununda sıralamayı devre dışı bırak
                 ]
             });
         });
