@@ -2,8 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
-    <meta name="description" content=""/>
+
     <meta name="author" content=""/>
     <title>Projelerimiz</title>
     <!-- Favicon-->
@@ -27,7 +26,6 @@
             height: 100%;
             margin: 0;
         }
-
         body {
             display: flex;
             flex-direction: column;
@@ -35,19 +33,19 @@
         a{
             text-decoration: none;
         }
-
         .content {
             flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
         }
-
         .footer {
             width: 100%;
             position: relative;
             bottom: 0;
-
         }
         .text-white{
-            color: #fffff !important;
+            color: #ffffff !important;
         }
         .navbar {
             position: fixed;
@@ -55,24 +53,20 @@
             width: 100%;
             z-index: 1000; /* Ensures the navbar is above other content */
         }
-
         .container {
             margin-top: 42px; /* Adjust this if your navbar height changes */
         }
-
         .search-form {
             display: flex;
             align-items: center;
             margin-top: 10px;
         }
-
         .search-form input[type="search"] {
             border-radius: 20px 0 0 20px;
             border: 1px solid #ced4da;
             padding: 10px;
             width: 250px;
         }
-
         .search-form button {
             border-radius: 0 20px 20px 0;
             border: 1px solid #ced4da;
@@ -81,37 +75,30 @@
             color: white;
             border-left: 0;
         }
-
         .search-form button:hover {
             background-color: #0056b3;
         }
-
         label {
             font-weight: bold;
         }
-
         .fixed-size {
             width: 200px;
             height: 200px;
             object-fit: cover;
         }
-
         .narrow-column {
             width: 200px;
             white-space: nowrap;
         }
-
         .special-card {
             border-left: solid rgb(18 ,106 ,205) 5px;
         }
-
         .special-card {
             position: relative;
             overflow: hidden;
             background-color: #ffffff; /* Kartın normal arka plan rengi */
             transition: background-color 0.3s ease;
         }
-
         .special-card::before {
             content: "";
             position: absolute;
@@ -123,18 +110,15 @@
             transition: left 0.3s ease;
             z-index: 0;
         }
-
         .special-card:hover::before {
             left: 0; /* Hover sırasında kartın tamamını kaplayacak şekilde sağa kaydır */
         }
-
         .special-card {
             position: relative;
             transition: left 0.3s ease, color 0.3s ease; /* Geçiş özelliklerini tanımlıyoruz */
             left: 0; /* Başlangıç konumu */
             height: 158px;
         }
-
         .special-card:hover {
             color: #ffffff;
             transform: scale(1.08);
@@ -143,7 +127,6 @@
             position: relative;
             z-index: 1;
         }
-
         .card-link {
             text-decoration: none;
             color: inherit;
@@ -162,13 +145,13 @@
 <!-- Navigation-->
 <nav class="navbar navbar-light bg-light static-top fixed-top" style="margin-top: -37px;">
     <div class="container">
-        <a class="navbar-brand" href="{{route('posts.main')}}"></a>
+        <a class="navbar-brand" href="{{route('posts.main')}}">
         <img
             src="{{asset('projectPanel/assets/MTÜ LOGO 4.png')}}"
             alt="navbar brand"
             class="navbar-brand"
             height="50"
-        />
+        /></a>
         <form action="{{route('posts.search')}}" class="search-form ml-auto">
             <input id="search-query" name="query" value="{{Request('query')}}" type="search" placeholder="Ara..."
                    required>
@@ -177,7 +160,7 @@
     </div>
 </nav>
 
-<div class="content container" style="display: flex;flex-direction: column;justify-content: space-between;">
+<div class="content container" style="margin-top: 50px;">
     @yield('content')
 </div>
 
