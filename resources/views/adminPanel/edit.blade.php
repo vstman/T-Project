@@ -1,113 +1,152 @@
 @extends('adminPanel.layout.app')
 
 @section('content')
+<div class="container">
+    <a href="{{ route('admin.index') }}" class="btn btn-warning">
+        <i class="fas fa-arrow-left"></i> Geri
+    </a>
+    <br><br>
+    <form action="{{ route('admin.posts.update', ['id' => $post->id]) }}" method="POST" enctype="multipart/form-data">
+        @csrf
+        @method('PUT')
+        <table class="table table-bordered">
+            <tbody id="project-table-body">
+                <tr>
+                    <td><label for="supporting-organization" class="col-form-label">Proje Destekleyen Kurum:</label></td>
+                    <td colspan="2"><input type="text" class="form-control" id="supporting-organization" name="supporting_organization" value="{{ old('supporting_organization', $post->supporting_organization) }}" aria-label="Proje Destekleyen Kurum"></td>
+                </tr>
+                <tr>
+                    <td><label for="project-title" class="col-form-label">Proje Adı ve Kodu:</label></td>
+                    <td><input class="form-control" id="project-title" name="project_title" placeholder="Proje Adı" value="{{ old('project_title', $post->project_title) }}" aria-label="Proje Adı"></td>
+                    <td><input class="form-control" id="project-code" name="project_code" placeholder="Kodu" value="{{ old('project_code', $post->project_code) }}" aria-label="Proje Kodu"></td>
+                </tr>
 
-    <div class="container">
-        <a href="{{ route('admin.index') }}" class="btn btn-warning">
-            <i class="fas fa-arrow-left"></i> Geri
-        </a>
-        <br>
-        <br>
-        <form action="{{ route('admin.posts.update', ['id' => $post->id]) }}" method="POST" enctype="multipart/form-data">
-            @csrf
-            @method('PUT')
-            <table class="table table-bordered">
-                <tbody id="project-table-body">
-                    <tr>
-                        <td><label for="supporting-organization" class="col-form-label">Proje Destekleyen Kurum:</label></td>
-                        <td colspan="2"><input type="text" class="form-control" id="supporting-organization" name="supporting_organization" value="{{ $post->supporting_organization }}"></td>
-                    </tr>
-                    <tr>
-                        <td><label for="project-title" class="col-form-label">Proje Adı ve Kodu:</label></td>
-                        <td><input class="form-control" id="project-title" name="project_title" placeholder="Proje Adı" value="{{ $post->project_title }}"></td>
-                        <td><input class="form-control" id="project-code" name="project_code" placeholder="Kodu" value="{{ $post->project_code }}"></td>
-                    </tr>
-                    <tr>
-                        <td><label for="supervisor" class="col-form-label">Yürütücü:</label></td>
-                        <td>
-                            <div class="d-flex flex-column">
-                                <div class="d-flex align-items-center mb-2">
-                                    <img id="supervisor-photo" src="{{ asset($post->supervisor_photo ?? 'image.png') }}" class="img-thumbnail mr-2 fixed-size" width="100" height="100">
-                                    <input type="file" class="form-control-file" id="photo-input" accept="image/*" name="supervisor_photo" onchange="previewImage(event)">
+                <!-- Supervisors Section -->
+                @foreach ($post->supervisors as $index => $supervisor)
+                    <tr class="supervisor-template">
+                        @if ($index == 0)
+                            <td rowspan="{{ $post->supervisors->count() }}" id="supervisors-rowspan">
+                                <label for="supervisor" class="col-form-label">Yürütücü(ler):</label>
+                            </td>
+                        @endif
+                        <td colspan="1">
+                            <div class="row">
+                                <div class="col">
+                                    <input class="form-control" name="supervisor_name[{{ $supervisor->id }}]" placeholder="Unvan Ad Soyad" value="{{ old('supervisor_name.' . $supervisor->id, $supervisor->name) }}" aria-label="Yürütücü Ad Soyad">
                                 </div>
-                                <input type="text" class="form-control mb-2" id="supervisor" name="supervisor" placeholder="Unvan Ad Soyad" value="{{ $post->supervisor }}">
+                                <div class="col">
+                                    <input class="form-control" name="supervisor_department[{{ $supervisor->id }}]" placeholder="Bölüm" value="{{ old('supervisor_department.' . $supervisor->id, $supervisor->department) }}" aria-label="Yürütücü Bölüm">
+                                </div>
                             </div>
                         </td>
-                        <td><textarea class="form-control" id="department" name="department" rows="5" placeholder="Yürütücü Bölüm">{{ $post->department }}</textarea></td>
-                    </tr>
-
-                    @foreach ($post->teamMembers as $index => $teamMember)
-                        <tr class="team-template">
-                            @if ($index == 0)
-                                <td rowspan="{{ $post->teamMembers->count() }}" id="team-members-rowspan">
-                                    <label for="team" class="col-form-label">Proje Ekibi:</label>
-                                </td>
+                        <td>
+                            <input class="form-control-file" type="file" name="supervisor_photo[{{ $supervisor->id }}]" onchange="previewImage(event, {{ $index }})">
+                            @if ($supervisor->supervisor_photo)
+                                <img src="{{ asset($supervisor->supervisor_photo) }}" class="supervisor-photo" alt="Supervisor Photo" style="max-width: 100px; margin-top: 10px;">
+                            @else
+                                <img src="{{ asset('storage/default-photo.png') }}" class="supervisor-photo" alt="Default Photo" style="max-width: 100px; margin-top: 10px;">
                             @endif
-                            <td colspan="1">
-                                <div class="row">
-                                    <div class="col">
-                                        <input class="form-control" name="team_name[]" placeholder="Ad Soyad" value="{{ $teamMember->name }}">
-                                    </div>
-                                    <div class="col">
-                                        <input class="form-control" name="team_position[]" placeholder="Görevi" value="{{ $teamMember->position }}">
-                                    </div>
-                                </div>
-                            </td>
-                            <td><input class="form-control" name="team_department[]" placeholder="Üniversite Bölüm" value="{{ $teamMember->department }}"></td>
-                        </tr>
-                    @endforeach
-
-                    <tr>
-                        <td colspan="4">
-                            <button type="button" class="btn btn-primary btn-sm" id="add-team-member">
-                                <i class="fa-solid fa-plus"></i>
-                            </button>
                         </td>
                     </tr>
-                    <tr>
-                        <td><label for="duration" class="col-form-label">Proje Süresi (Ay):</label></td>
-                        <td colspan="2"><input type="text" class="form-control" id="duration" name="duration" value="{{ $post->duration }}"></td>
+                @endforeach
+                <tr>
+                    <td colspan="4">
+                        {{-- <button type="button" class="btn btn-primary btn-sm" id="add-supervisor">
+                            <i class="fa-solid fa-plus"></i> Yürütücü Ekle
+                        </button> --}}
+                    </td>
+                </tr>
+                
+                <!-- Team Members Section -->
+                @foreach ($post->teamMembers as $index => $teamMember)
+                    <tr class="team-template">
+                        @if ($index == 0)
+                            <td rowspan="{{ $post->teamMembers->count() }}" id="team-members-rowspan">
+                                <label for="team" class="col-form-label">Proje Ekibi:</label>
+                            </td>
+                        @endif
+                        <td colspan="1">
+                            <div class="row">
+                                <div class="col">
+                                    <input class="form-control" name="team_name[{{ $teamMember->id }}]" placeholder="Ad Soyad" value="{{ old('team_name.' . $teamMember->id, $teamMember->name) }}" aria-label="Ekip Üyesi Ad Soyad">
+                                </div>
+                                <div class="col">
+                                    <input class="form-control" name="team_position[{{ $teamMember->id }}]" placeholder="Görevi" value="{{ old('team_position.' . $teamMember->id, $teamMember->position) }}" aria-label="Ekip Üyesi Görevi">
+                                </div>
+                            </div>
+                        </td>
+                        <td><input class="form-control" name="team_department[{{ $teamMember->id }}]" placeholder="Üniversite Bölüm" value="{{ old('team_department.' . $teamMember->id, $teamMember->department) }}" aria-label="Ekip Üyesi Bölüm"></td>
                     </tr>
-                    <tr>
-                        <td><label for="budget" class="col-form-label">Proje Bütçesi (TL):</label></td>
-                        <td colspan="2"><input type="text" class="form-control" id="budget" name="budget" value="{{ $post->budget }}"></td>
-                    </tr>
-                </tbody>
-            </table>
-            <button type="submit" class="btn btn-success">Güncelle</button>
-        </form>
-    </div>
+                @endforeach
 
-    <script>
-        document.getElementById('add-team-member').addEventListener('click', function() {
-            var templateRow = document.querySelector('.team-template').cloneNode(true);
-            templateRow.classList.remove('team-template');
-            templateRow.querySelector('input[name="team_name[]"]').value = '';
-            templateRow.querySelector('input[name="team_position[]"]').value = '';
-            templateRow.querySelector('input[name="team_department[]"]').value = '';
+                <tr>
+                    <td colspan="4">
+                        {{-- <button type="button" class="btn btn-primary btn-sm" id="add-team-member">
+                            <i class="fa-solid fa-plus"></i> Ekip Üyesi Ekle
+                        </button> --}}
+                    </td>
+                </tr>
+                
+                <tr>
+                    <td><label for="duration" class="col-form-label">Proje Süresi (Ay):</label></td>
+                    <td colspan="2"><input type="text" class="form-control" id="duration" name="duration" value="{{ old('duration', $post->duration) }}" aria-label="Proje Süresi (Ay)"></td>
+                </tr>
+                <tr>
+                    <td><label for="budget" class="col-form-label">Proje Bütçesi (TL):</label></td>
+                    <td colspan="2"><input type="text" class="form-control" id="budget" name="budget" value="{{ old('budget', $post->budget) }}" aria-label="Proje Bütçesi (TL)"></td>
+                </tr>
+            </tbody>
+        </table>
+        <button type="submit" class="btn btn-success">Güncelle</button>
+    </form>
+</div>
 
-            var teamMembersRowspan = document.getElementById('team-members-rowspan');
-            teamMembersRowspan.rowSpan = parseInt(teamMembersRowspan.rowSpan) + 1;
+<script>
+    document.getElementById('add-supervisor').addEventListener('click', function() {
+        var templateRow = document.querySelector('.supervisor-template').cloneNode(true);
+        templateRow.classList.remove('supervisor-template');
+        templateRow.querySelectorAll('input').forEach(input => input.value = '');
 
-            var labelCell = templateRow.querySelector('td:first-child');
-            if (labelCell) {
-                labelCell.remove();
-            }
+        var supervisorsRowspan = document.getElementById('supervisors-rowspan');
+        supervisorsRowspan.rowSpan = parseInt(supervisorsRowspan.rowSpan) + 1;
 
-            document.getElementById('project-table-body').insertBefore(templateRow, this.closest('tr'));
-        });
-
-        function previewImage(event) {
-            var input = event.target;
-            var reader = new FileReader();
-
-            reader.onload = function(){
-                var dataURL = reader.result;
-                var output = document.getElementById('supervisor-photo');
-                output.src = dataURL;
-            };
-
-            reader.readAsDataURL(input.files[0]);
+        var labelCell = templateRow.querySelector('td:first-child');
+        if (labelCell) {
+            labelCell.remove();
         }
-    </script>
+
+        document.getElementById('project-table-body').insertBefore(templateRow, this.closest('tr'));
+    });
+
+    document.getElementById('add-team-member').addEventListener('click', function() {
+        var templateRow = document.querySelector('.team-template').cloneNode(true);
+        templateRow.classList.remove('team-template');
+        templateRow.querySelectorAll('input').forEach(input => input.value = '');
+
+        var teamMembersRowspan = document.getElementById('team-members-rowspan');
+        teamMembersRowspan.rowSpan = parseInt(teamMembersRowspan.rowSpan) + 1;
+
+        var labelCell = templateRow.querySelector('td:first-child');
+        if (labelCell) {
+            labelCell.remove();
+        }
+
+        document.getElementById('project-table-body').insertBefore(templateRow, this.closest('tr'));
+    });
+
+    function previewImage(event, index) {
+        var input = event.target;
+        var reader = new FileReader();
+
+        reader.onload = function() {
+            var dataURL = reader.result;
+            var output = document.querySelectorAll('img.supervisor-photo')[index];
+            if (output) {
+                output.src = dataURL;
+            }
+        };
+
+        reader.readAsDataURL(input.files[0]);
+    }
+</script>
 @endsection

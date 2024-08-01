@@ -19,19 +19,28 @@
                     <td><input class="form-control" id="project-title" name="project_title" placeholder="Proje Adı"></td>
                     <td><input class="form-control" id="project-code" name="project_code" placeholder="Kodu"></td>
                 </tr>
-                <tr>
+                <!-- Supervisors Section -->
+                <tr class="supervisor-template">
                     <td><label for="supervisor" class="col-form-label">Yürütücü:</label></td>
-                    <td>
+                    <td colspan="2">
                         <div class="d-flex flex-column">
                             <div class="d-flex align-items-center mb-2">
-                                <img id="supervisor-photo" class="img-thumbnail mr-2 fixed-size" width="100" height="100">
-                                <input type="file" class="form-control-file" id="photo-input" name="supervisor_photo" accept="image/*" onchange="previewImage(event)">
+                                <img class="img-thumbnail mr-2 fixed-size supervisor-photo-preview" width="100" height="100">
+                                <input type="file" class="form-control-file" name="supervisor_photo[]" accept="image/*" onchange="previewImage(event, this)">
                             </div>
-                            <input type="text" class="form-control mb-2" id="supervisor" name="supervisor" placeholder="Unvan Ad Soyad">
+                            <input type="text" class="form-control mb-2" name="supervisor_name[]" placeholder="Unvan Ad Soyad">
+                            <textarea class="form-control" name="supervisor_department[]" rows="3" placeholder="Yürütücü Bölüm"></textarea>
                         </div>
                     </td>
-                    <td><textarea class="form-control" id="department" name="department" rows="5" placeholder="Yürütücü Bölüm"></textarea></td>
                 </tr>
+                <tr>
+                    <td colspan="3">
+                        <button type="button" class="btn btn-primary btn-sm" id="add-supervisor">
+                            <i class="fa-solid fa-plus"></i> Yürütücü Ekle
+                        </button>
+                    </td>
+                </tr>
+                <!-- Team Members Section -->
                 <tr class="team-template">
                     <td><label for="team" class="col-form-label">Proje Ekibi:</label></td>
                     <td colspan="1">
@@ -49,10 +58,11 @@
                 <tr>
                     <td colspan="4">
                         <button type="button" class="btn btn-primary btn-sm" id="add-team-member">
-                            <i class="fa-solid fa-plus"></i>
+                            <i class="fa-solid fa-plus"></i> Ekip Üyesi Ekle
                         </button>
                     </td>
                 </tr>
+                <!-- Project Details -->
                 <tr>
                     <td><label for="duration" class="col-form-label">Proje Süresi (Ay):</label></td>
                     <td colspan="2"><input type="text" class="form-control" id="duration" name="duration"></td>
@@ -67,6 +77,18 @@
     </form>
 
     <script>
+        // Add Supervisor Row
+        document.getElementById('add-supervisor').addEventListener('click', function() {
+            var templateRow = document.querySelector('.supervisor-template').cloneNode(true);
+            templateRow.classList.remove('supervisor-template');
+            templateRow.querySelector('.supervisor-photo-preview').src = '';
+            templateRow.querySelector('input[name="supervisor_name[]"]').value = '';
+            templateRow.querySelector('textarea[name="supervisor_department[]"]').value = '';
+            templateRow.querySelector('input[name="supervisor_photo[]"]').value = '';
+            document.getElementById('project-table-body').insertBefore(templateRow, this.closest('tr'));
+        });
+
+        // Add Team Member Row
         document.getElementById('add-team-member').addEventListener('click', function() {
             var templateRow = document.querySelector('.team-template').cloneNode(true);
             templateRow.classList.remove('team-template');
@@ -76,18 +98,15 @@
             document.getElementById('project-table-body').insertBefore(templateRow, this.closest('tr'));
         });
 
-        // Yüklenen fotoğrafın önizlemesini göstermek için
-        function previewImage(event) {
-            var input = event.target;
+        // Preview Image
+        function previewImage(event, inputElement) {
             var reader = new FileReader();
-
             reader.onload = function(){
                 var dataURL = reader.result;
-                var output = document.getElementById('supervisor-photo');
+                var output = inputElement.closest('div').querySelector('.supervisor-photo-preview');
                 output.src = dataURL;
             };
-
-            reader.readAsDataURL(input.files[0]);
+            reader.readAsDataURL(inputElement.files[0]);
         }
     </script>
 @endsection

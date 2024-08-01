@@ -5,7 +5,10 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Post;
+use App\Models\Supervisor;
 use App\Models\TeamMember;
+use Illuminate\Support\Facades\DB; 
+use Illuminate\Support\Facades\Log;
 
 class PostController extends Controller
 {
@@ -27,56 +30,61 @@ class PostController extends Controller
     }
 
     public function addPost(Request $request)
-{
-    // Verileri doğrulama
-    $validated = $request->validate([
-        'supporting_organization' => 'required|string|max:255',
-        'project_title' => 'required|string|max:255',
-        'project_code' => 'required|string|max:50',
-        'supervisor' => 'required|string|max:255',
-        'department' => 'required|string',
-        'duration' => 'required|integer',
-        'budget' => 'required|numeric',
-        'supervisor_photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-        'team_name' => 'required|array|min:1',
-        'team_name.*' => 'required|string|max:255',
-        'team_position.*' => 'nullable|string|max:255',
-        'team_department.*' => 'nullable|string|max:255',
-    ]);
-
-    $post = new Post();
-    $post->supporting_organization = $validated['supporting_organization'];
-    $post->project_title = $validated['project_title'];
-    $post->project_code = $validated['project_code'];
-    $post->supervisor = $validated['supervisor'];
-    $post->department = $validated['department'];
-    $post->duration = $validated['duration'];
-    $post->budget = $validated['budget'];
-
-    // Resim dosyasını yükleme işlemi
-    if ($request->hasFile('supervisor_photo')) {
-        $file = $request->file('supervisor_photo');
-        $filename = time() . '.' . $file->getClientOriginalExtension();
-        $filePath = $file->storeAs('image', $filename, 'public');
-        $post->supervisor_photo = '/storage/' . $filePath;
+    {
+        try {
+            // Create the Post
+            $post = new Post();
+            $post->supporting_organization = $request->input('supporting_organization');
+            $post->project_title = $request->input('project_title');
+            $post->project_code = $request->input('project_code');
+            $post->duration = $request->input('duration');
+            $post->budget = $request->input('budget');
+            $post->save();
+    
+            // Process supervisors
+            if ($request->has('supervisor_name')) {
+                foreach ($request->input('supervisor_name') as $index => $name) {
+                    $supervisor = new Supervisor();
+                    $supervisor->post_id = $post->id;
+                    $supervisor->name = $name;
+                    $supervisor->department = $request->input('supervisor_department')[$index] ?? null;
+    
+                    if ($request->hasFile("supervisor_photo.$index")) {
+                        $file = $request->file("supervisor_photo.$index");
+                        $filename = time() . '_' . $index . '.' . $file->getClientOriginalExtension();
+                        $filePath = $file->storeAs('supervisor_photos', $filename, 'public');
+                        $supervisor->supervisor_photo = 'storage/' . $filePath;
+                    } else {
+                        // If no photo is uploaded, set a default photo or null
+                        $supervisor->supervisor_photo = 'storage/default-photo.png'; // Adjust this path if needed
+                    }
+    
+                    $supervisor->save();
+                }
+            }
+    
+            // Process team members
+            if ($request->has('team_name')) {
+                foreach ($request->input('team_name') as $key => $teamName) {
+                    $teamMember = new TeamMember();
+                    $teamMember->post_id = $post->id;
+                    $teamMember->name = $teamName;
+                    $teamMember->position = $request->input('team_position')[$key] ?? null;
+                    $teamMember->department = $request->input('team_department')[$key] ?? null;
+                    $teamMember->save();
+                }
+            }
+            
+            return redirect()->route('admin.index')->with('success', 'Post başarıyla oluşturuldu.');
+        } catch (\Exception $e) {
+            dd($e);
+            Log::error('Error creating post: ' . $e->getMessage());
+            return redirect()->back()->withErrors(['error' => 'An error occurred while creating the post.']);
+        }
     }
+    
 
-    $post->save();
-
-    $teamMembers = [];
-    foreach ($validated['team_name'] as $key => $teamName) {
-        $teamMembers[] = new TeamMember([
-            'name' => $teamName,
-            'position' => $validated['team_position'][$key] ?? null,
-            'department' => $validated['team_department'][$key] ?? null,
-        ]);
-    }
-    $post->teamMembers()->saveMany($teamMembers);
-
-    return redirect()->route('admin.index')->with('success', 'Post başarıyla oluşturuldu.');
-}
-
-
+    
     public function edit($id)
     {
         $post = Post::find($id);
@@ -90,67 +98,94 @@ class PostController extends Controller
         'supporting_organization' => 'required|string|max:255',
         'project_title' => 'required|string|max:255',
         'project_code' => 'required|string|max:50',
-        'supervisor' => 'required|string|max:255',
-        'department' => 'required|string',
         'duration' => 'required|integer',
         'budget' => 'required|numeric',
-        'supervisor_photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-        'team_name' => 'required|array|min:1',
-        'team_name.*' => 'required|string|max:255',
+        'supervisor_name.*' => 'nullable|string|max:255',
+        'supervisor_department.*' => 'nullable|string|max:255',
+        'supervisor_photo.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+        'team_name.*' => 'nullable|string|max:255',
         'team_position.*' => 'nullable|string|max:255',
         'team_department.*' => 'nullable|string|max:255',
     ]);
 
     $post = Post::find($id);
 
+    // Güncellenen Post bilgileri
+    $post->supporting_organization = $validated['supporting_organization'];
     $post->project_title = $validated['project_title'];
     $post->project_code = $validated['project_code'];
-    $post->supporting_organization = $validated['supporting_organization'];
-    $post->supervisor = $validated['supervisor'];
-    $post->department = $validated['department'];
     $post->duration = $validated['duration'];
     $post->budget = $validated['budget'];
-
-
-    if ($request->hasFile('supervisor_photo')) {
-
-        if ($post->supervisor_photo) {
-            $oldPhotoPath = public_path('storage/' . $post->supervisor_photo);
-            if (file_exists($oldPhotoPath)) {
-                unlink($oldPhotoPath);
-            }
-        }
-
-        // Yeni resmi yükle
-        $file = $request->file('supervisor_photo');
-        if ($file->isValid()) {
-            $filename = time() . '.' . $file->getClientOriginalExtension();
-            $filePath = $file->storeAs('uploads/supervisors', $filename, 'public');
-            $post->supervisor_photo = 'storage/' . $filePath;
-        }
-    }
-
     $post->save();
 
+    // Supervisor işlemleri
+    if ($request->has('supervisor_name')) {
+        $supervisorIds = [];
 
-    $post->teamMembers()->delete();
+        foreach ($request->supervisor_name as $index => $name) {
+            $supervisor = $post->supervisors()->find($index);
+            if ($supervisor) {
+                $supervisor->name = $name;
+                $supervisor->department = $request->supervisor_department[$index] ?? null;
 
+                if ($request->hasFile("supervisor_photo.$index")) {
+                    // Eski fotoğrafı sil
+                    if ($supervisor->supervisor_photo && $supervisor->supervisor_photo != 'storage/default-photo.png') {
+                        $oldPhotoPath = public_path('storage/' . $supervisor->supervisor_photo);
+                        if (file_exists($oldPhotoPath)) {
+                            unlink($oldPhotoPath);
+                        }
+                    }
 
-    if ($request->has('team_name')) {
-        foreach ($request->team_name as $index => $name) {
-            if (!empty($name)) {
-                $post->teamMembers()->create([
-                    'name' => $name,
-                    'position' => $request->team_position[$index] ?? null,
-                    'department' => $request->team_department[$index] ?? null,
-                ]);
+                    // Yeni fotoğrafı yükle
+                    $file = $request->file("supervisor_photo.$index");
+                    $filename = time() . '_' . $index . '.' . $file->getClientOriginalExtension();
+                    $filePath = $file->storeAs('supervisor_photos', $filename, 'public');
+                    $supervisor->supervisor_photo = 'storage/' . $filePath;
+                }
+
+                $supervisor->save();
+                $supervisorIds[] = $supervisor->id;
+            } else {
+                // Yeni supervisor ekleme
+                $supervisor = new Supervisor();
+                $supervisor->post_id = $post->id;
+                $supervisor->name = $name;
+                $supervisor->department = $request->supervisor_department[$index] ?? null;
+
+                if ($request->hasFile("supervisor_photo.$index")) {
+                    $file = $request->file("supervisor_photo.$index");
+                    $filename = time() . '_' . $index . '.' . $file->getClientOriginalExtension();
+                    $filePath = $file->storeAs('supervisor_photos', $filename, 'public');
+                    $supervisor->supervisor_photo = 'storage/' . $filePath;
+                } else {
+                    $supervisor->supervisor_photo = 'storage/default-photo.png';
+                }
+
+                $supervisor->save();
+                $supervisorIds[] = $supervisor->id;
             }
+        }
+
+        // Mevcut, fakat gönderilmeyen supervisor'ları sil
+        $post->supervisors()->whereNotIn('id', $supervisorIds)->delete();
+    }
+
+    // Ekip üyeleri işlemleri
+    $post->teamMembers()->delete(); // Mevcut ekip üyelerini sil
+    if (!empty($validated['team_name'])) {
+        foreach ($validated['team_name'] as $key => $teamName) {
+            $teamMember = new TeamMember();
+            $teamMember->post_id = $post->id;
+            $teamMember->name = $teamName;
+            $teamMember->position = $validated['team_position'][$key] ?? null;
+            $teamMember->department = $validated['team_department'][$key] ?? null;
+            $teamMember->save();
         }
     }
 
-    return redirect()->route('admin.index')->with('success', 'Post güncellendi.');
+    return redirect()->route('admin.index')->with('success', 'Post başarıyla güncellendi.');
 }
-
 
     public function upload(Request $request)
     {

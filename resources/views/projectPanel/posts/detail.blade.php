@@ -1,7 +1,6 @@
 @extends('projectPanel.layout.app')
 
 @section('content')
-
     <div class="container">
         <br>
         <a href="{{ route('posts.index') }}" class="btn btn-warning">
@@ -17,19 +16,27 @@
                 <td colspan="2"><p id="supporting-organization">{{ $post->supporting_organization }}</p></td>
             </tr>
             <tr>
-                <td class="narrow-column"><label for="project-title" class="col-form-label">Proje Adı ve kodu:</label></td>
+                <td class="narrow-column"><label for="project-title" class="col-form-label">Proje Adı ve Kodu:</label></td>
                 <td colspan="2"><p>{{ $post->project_title }} - {{ $post->project_code }}</p></td>
             </tr>
             <tr>
-                <td class="narrow-column"><label for="supervisor" class="col-form-label">Yürütücü:</label></td>
-                <td>
-                    <div class="d-flex flex-column">
-                        <div class="d-flex align-items-center mb-2">
-                            <img id="supervisor-photo" src="{{ asset($post->supervisor_photo ?? 'image.png') }}" class="img-thumbnail mr-2 fixed-size" width="100" height="100">
-                        </div>
-                        <p id="supervisor">{{ $post->supervisor }}</p>
-                    </div>
-                </td>
+                @if ($post->supervisors->isNotEmpty())
+                    <tr>
+                        <td><label for="supervisors" class="col-form-label">Yürütücüler:</label></td>
+                        <td colspan="2">
+                            @foreach ($post->supervisors as $supervisor)
+                                <div class="d-flex align-items-center mb-2">
+                                    <img src="{{ asset($supervisor->supervisor_photo ?? 'default.png') }}" alt="Supervisor Photo" class="img-thumbnail mr-2" width="100" height="100">
+                                    <div>
+                                        <p><strong>Ad:</strong> {{ $supervisor->name }}</p>
+                                        <p><strong>Bölüm:</strong> {{ $supervisor->department }}</p>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </td>
+                    </tr>
+                @endif
+
                 <td><p id="department">{{ $post->department }}</p></td>
             </tr>
 
@@ -60,5 +67,4 @@
             </tbody>
         </table>
     </div>
-
 @endsection

@@ -25,4 +25,9 @@ class Post extends Model
     {
         return $this->hasMany(TeamMember::class);
     }
+
+    public function supervisors()
+    {
+        return $this->hasMany(Supervisor::class);
+    }
 }

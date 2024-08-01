@@ -11,16 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('posts', function (Blueprint $table) {
+        Schema::create('supervisors', function (Blueprint $table) {
             $table->id();
-            $table->string('supporting_organization');
-            $table->text('project_title');
-            $table->text('project_code');
-
-            $table->string('duration');
-            $table->decimal('budget', 15, 2); 
-             
-            $table->timestamps(); 
+            $table->unsignedBigInteger('post_id');
+            $table->string("name");
+            $table->string('department');
+            $table->string('supervisor_photo')->default('default-photo.png')->change();
+            $table->timestamps();
         });
     }
 
@@ -29,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('posts');
+        Schema::dropIfExists('supervisors');
     }
 };
