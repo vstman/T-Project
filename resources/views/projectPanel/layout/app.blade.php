@@ -32,7 +32,8 @@
             display: flex;
             flex-direction: column;
         }
-        a{
+
+        a {
             text-decoration: none;
         }
 
@@ -40,15 +41,48 @@
             flex: 1;
         }
 
-        .footer {
+        .footer-content {
             width: 100%;
             position: relative;
-            bottom: 0;
+            bottom: -17px;
+            background-color: #262f5a;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px 0;
 
         }
-        .text-white{
+
+        .logo {
+            margin-bottom: 10px;
+        }
+
+        .social-icons {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 10px;
+        }
+
+        .social-icons a {
+            color: white!important;
+            font-size: 23px;
+            padding: 10px;
+        }
+
+        .copyright-text {
+            background-color: rgb(18, 167, 205);
+            padding: 5px 0;
+            font-size: 10px;
+            color: white;
+            text-align: center;
+            position: relative;
+            bottom: -17px;
+        }
+        .text-white {
             color: #ffffff !important;
         }
+
         .navbar {
             position: fixed;
             top: 0;
@@ -77,7 +111,7 @@
             border-radius: 0 20px 20px 0;
             border: 1px solid #ced4da;
             padding: 10px 15px;
-            background-color: rgb(18 ,106 ,205);
+            background-color: rgb(18, 106, 205);
             color: white;
             border-left: 0;
         }
@@ -102,7 +136,7 @@
         }
 
         .special-card {
-            border-left: solid rgb(18 ,106 ,205) 5px;
+            border-left: solid rgb(18, 106, 205) 5px;
         }
 
         .special-card {
@@ -119,7 +153,7 @@
             left: -100%; /* Başlangıçta kartın dışında */
             height: 100%;
             width: 100%;
-            background-color:rgb(18 ,106 ,205);
+            background-color: rgb(18, 106, 205);
             transition: left 0.3s ease;
             z-index: 0;
         }
@@ -139,6 +173,7 @@
             color: #ffffff;
             transform: scale(1.08);
         }
+
         .special-card > * {
             position: relative;
             z-index: 1;
@@ -148,12 +183,15 @@
             text-decoration: none;
             color: inherit;
         }
+
         .footer.text-white a {
             color: #ffffff !important;
         }
-        .bi-twitter::before,.bi-facebook::before,.bi-instagram::before{
+
+        .bi-twitter::before, .bi-facebook::before, .bi-instagram::before {
             color: #ffffff;
         }
+
     </style>
 
     @yield('style-content')
@@ -163,12 +201,12 @@
 <nav class="navbar navbar-light bg-light static-top fixed-top" style="margin-top: -37px;">
     <div class="container">
         <a class="navbar-brand" href="{{route('posts.main')}}">
-        <img
-            src="{{asset('projectPanel/assets/MTÜ LOGO 4.png')}}"
-            alt="navbar brand"
-            class="navbar-brand"
-            height="50"
-        /></a>
+            <img
+                src="{{asset('projectPanel/assets/MTÜ LOGO 4.png')}}"
+                alt="navbar brand"
+                class="navbar-brand"
+                height="50"
+            /></a>
         <form action="{{route('posts.search')}}" class="search-form ml-auto">
             <input id="search" name="search" type="search" placeholder="Ara..."
                    required>
@@ -181,51 +219,33 @@
 </div>
 
 <!-- Footer-->
-<footer class="footer bg-light text-white">
-    <div class="container">
-        <div class="row">
-            <!-- Contact Information -->
-            <div class="col-lg-3 text-center text-lg-start">
-                <h5 class="text-uppercase mb-4"><strong>İLETİŞİM</strong></h5>
-                <p>Adres: Boran Mahallesi Kırkgöz Caddesi No: 82B- (Adres Kodu:-3712025703-) Battalgazi/MALATYA</p>
-                <p>Adres: İkizce Mahallesi İkizce Sokak No:100 P.K. 44900 Yeşilyurt / MALATYA</p>
-                <p>Yeşilyurt Santral: 0422 504 80 00 -06</p>
-                <p>Kep adresi: matu@hs01.kep.tr</p>
-                <p>Santral: (0422)846 12 55</p>
-                <p>(0422) 504 80 00-06</p>
-                <p>Fax: 0422 846 12 25</p>
-                <p>bilgi@ozal.edu.tr</p>
-            </div>
-
-            <!-- University Information -->
-            <div class="col-lg-3 text-center text-lg-start">
-                <h5 class="text-uppercase mb-4">Malatya Turgut Özal Üniversitesi</h5>
-                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d30490.848460074623!2d38.35205404541401!3d38.466200927256274!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x40764bf28ac69bbf%3A0xaf9769e358c30948!2sMalatya+Turgut+%C3%96zal+%C3%9Cniversitesi!5e1!3m2!1str!2str!4v1556256830463!5m2!1str!2str" width="250" height="200" frameborder="0" style="border:0" allowfullscreen=""></iframe>
-            </div>
-
-            <!-- Social Media & Links -->
-            <div class="col-lg-3 text-center text-lg-start">
-                <h5 class="text-uppercase mb-4">Sosyal Medya</h5>
-                <a href="https://www.facebook.com/malatyaturgutozaledu/" class="me-3"><i class="bi-facebook fs-3" style="font-size: 30px; color: #000;"></i></a>
-                <a href="https://twitter.com/MTU_ozaledu" class="me-3"><i class="bi-twitter fs-3" style="font-size: 30px; color: #000;"></i></a>
-                <a href="https://www.instagram.com/malatyaturgutozaledu/"><i class="bi-instagram fs-3" style="font-size: 30px; color: #000;"></i></a>
-                <p class="mt-3"><a href="https://ozal.edu.tr/akademik-takvim/" target="_blank" rel="noopener">Akademik Takvim</a></p>
-                <p><a href="http://obs.ozal.edu.tr/" target="_blank" rel="noopener">Öğrenci Portalı</a></p>
-                <p><a href="http://pbs.ozal.edu.tr/" target="_blank" rel="noopener">Personel Bilgi Sistemi</a></p>
-                <p><a href="http://belge.ozal.edu.tr/account/auth/login/" target="_blank" rel="noopener">EBYS</a></p>
-                <p><a href="http://obs.ozal.edu.tr/oibs/login.aspx" target="_blank" rel="noopener">Öğrenci Bilgi Sistemi</a></p>
-                <p><a href="https://cabim.ulakbim.gov.tr/ekual/e-veri-tabanlari/" target="_blank" rel="noopener">Veri Tabanları</a></p>
-            </div>
-
-            <!-- Logo -->
-            <div class="col-lg-3 text-center text-lg-start">
-                <img src="https://ozal.edu.tr/wp-content/uploads/2023/12/OZAL-2-1-317x500-1-1-317x500.png" alt="Malatya Turgut Özal Üniversitesi" class="img-fluid" style="max-width: 100%;">
-            </div>
+<footer class="mb-0">
+    <div class="footer-content">
+        <div class="logo">
+            <!--Logo-->
+            <a href=""><img src="https://web.ozal.edu.tr/front/images/resim/ozal.png" alt="Logo"
+                            style="width: 150px; height: 150px;"></a>
+        </div>
+        <div class="social-icons">
+            <!-- Sosyal medya ikonları-->
+            <a href="https://www.instagram.com/malatyaturgutozaledu/" target="_blank"><i
+                    class="fa-brands fa-instagram"></i></a>
+            <a href="https://twitter.com/MTU_ozaledu" target="_blank"><i
+                    class="fa-brands fa-twitter"></i></a>
+            <a href="" target="_blank"><i class="fa-brands fa-facebook"></i></a>
+            <a href="https://www.youtube.com/channel/UC1vdFuS3OMIn5jwOIUyAdKQ" target="_blank"><i
+                    class="fa-brands fa-youtube"></i></a>
+            <a href="https://www.google.com/maps?q=" target="_blank">
+                <i class="fa-solid fa-location-dot"></i>
+            </a>
+            <!-- Diğer sosyal medya ikonları -->
         </div>
 
-
     </div>
+    <p class="text-center copyright-text">2024 © Fırat Üniversitesi
+        <a href="https://ddyo.firat.edu.tr/tr" style="color: white">Dijital Dönüşüm ve Yazılım Ofisi</a></p>
 </footer>
+
 
 
 <!-- Bootstrap core JS-->
