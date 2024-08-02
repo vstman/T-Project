@@ -92,8 +92,7 @@ class PostController extends Controller
     }
 
     public function update(Request $request, $id)
-{
-    // Verileri doğrulama
+    {
     $validated = $request->validate([
         'supporting_organization' => 'required|string|max:255',
         'project_title' => 'required|string|max:255',
@@ -117,7 +116,6 @@ class PostController extends Controller
     $post->duration = $validated['duration'];
     $post->budget = $validated['budget'];
 
-    // Supervisor işlemleri
     $supervisorIds = [];
     if (isset($request->supervisor_id)) {
         foreach ($request->supervisor_id as $index => $supervisorId) {
@@ -145,7 +143,6 @@ class PostController extends Controller
     // Kalan supervisor'ları sil
     $post->supervisors()->whereNotIn('id', $supervisorIds)->delete();
 
-    // Ekip üyeleri işlemleri
     $post->teamMembers()->delete(); // Mevcut ekip üyelerini sil
     if (!empty($validated['team_name'])) {
         foreach ($validated['team_name'] as $key => $teamName) {
@@ -215,8 +212,5 @@ class PostController extends Controller
 
         return response()->json(['html' => $view]);
     }
-
-    // Handle non-AJAX requests if necessary
 }
-
 }
