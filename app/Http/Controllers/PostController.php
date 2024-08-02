@@ -116,60 +116,34 @@ class PostController extends Controller
     $post->project_code = $validated['project_code'];
     $post->duration = $validated['duration'];
     $post->budget = $validated['budget'];
-    $post->save();
 
     // Supervisor işlemleri
-    if ($request->has('supervisor_name')) {
-        $supervisorIds = [];
-
-        foreach ($request->supervisor_name as $index => $name) {
-            $supervisor = $post->supervisors()->find($index);
-            if ($supervisor) {
-                $supervisor->name = $name;
-                $supervisor->department = $request->supervisor_department[$index] ?? null;
-
-                if ($request->hasFile("supervisor_photo.$index")) {
-                    // Eski fotoğrafı sil
-                    if ($supervisor->supervisor_photo && $supervisor->supervisor_photo != 'storage/default-photo.png') {
-                        $oldPhotoPath = public_path('storage/' . $supervisor->supervisor_photo);
-                        if (file_exists($oldPhotoPath)) {
-                            unlink($oldPhotoPath);
-                        }
-                    }
-
-                    // Yeni fotoğrafı yükle
-                    $file = $request->file("supervisor_photo.$index");
-                    $filename = time() . '_' . $index . '.' . $file->getClientOriginalExtension();
-                    $filePath = $file->storeAs('supervisor_photos', $filename, 'public');
-                    $supervisor->supervisor_photo = 'storage/' . $filePath;
-                }
-
-                $supervisor->save();
-                $supervisorIds[] = $supervisor->id;
-            } else {
-                // Yeni supervisor ekleme
+    $supervisorIds = [];
+    if (isset($request->supervisor_id)) {
+        foreach ($request->supervisor_id as $index => $supervisorId) {
+            $supervisor = Supervisor::find($supervisorId);
+            if (!$supervisor) {
                 $supervisor = new Supervisor();
                 $supervisor->post_id = $post->id;
-                $supervisor->name = $name;
-                $supervisor->department = $request->supervisor_department[$index] ?? null;
-
-                if ($request->hasFile("supervisor_photo.$index")) {
-                    $file = $request->file("supervisor_photo.$index");
-                    $filename = time() . '_' . $index . '.' . $file->getClientOriginalExtension();
-                    $filePath = $file->storeAs('supervisor_photos', $filename, 'public');
-                    $supervisor->supervisor_photo = 'storage/' . $filePath;
-                } else {
-                    $supervisor->supervisor_photo = 'storage/default-photo.png';
-                }
-
-                $supervisor->save();
-                $supervisorIds[] = $supervisor->id;
             }
-        }
 
-        // Mevcut, fakat gönderilmeyen supervisor'ları sil
-        $post->supervisors()->whereNotIn('id', $supervisorIds)->delete();
+            $supervisor->name = $request->supervisor_name[$index];
+            $supervisor->department = $request->supervisor_department[$index] ?? null;
+
+            if ($request->hasFile("supervisor_photo.$index")) {
+                $file = $request->file("supervisor_photo.$index");
+                $filename = time() . '_' . $index . '.' . $file->getClientOriginalExtension();
+                $filePath = $file->storeAs('supervisor_photos', $filename, 'public');
+                $supervisor->supervisor_photo = 'storage/' . $filePath;
+            }
+
+            $supervisor->save();
+            $supervisorIds[] = $supervisor->id;
+        }
     }
+
+    // Kalan supervisor'ları sil
+    $post->supervisors()->whereNotIn('id', $supervisorIds)->delete();
 
     // Ekip üyeleri işlemleri
     $post->teamMembers()->delete(); // Mevcut ekip üyelerini sil
@@ -184,8 +158,13 @@ class PostController extends Controller
         }
     }
 
+    $post->save();
+
     return redirect()->route('admin.index')->with('success', 'Post başarıyla güncellendi.');
 }
+
+
+
 
     public function upload(Request $request)
     {

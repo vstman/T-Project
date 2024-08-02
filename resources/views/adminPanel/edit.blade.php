@@ -32,15 +32,16 @@
                         <td colspan="1">
                             <div class="row">
                                 <div class="col">
-                                    <input class="form-control" name="supervisor_name[{{ $supervisor->id }}]" placeholder="Unvan Ad Soyad" value="{{ old('supervisor_name.' . $supervisor->id, $supervisor->name) }}" aria-label="Yürütücü Ad Soyad">
+                                    <input type="hidden" name="supervisor_id[{{ $index }}]" value="{{ $supervisor->id }}">
+                                    <input class="form-control" name="supervisor_name[{{ $index }}]" placeholder="Unvan Ad Soyad" value="{{ old('supervisor_name.' . $index, $supervisor->name) }}" aria-label="Yürütücü Ad Soyad">
                                 </div>
                                 <div class="col">
-                                    <input class="form-control" name="supervisor_department[{{ $supervisor->id }}]" placeholder="Bölüm" value="{{ old('supervisor_department.' . $supervisor->id, $supervisor->department) }}" aria-label="Yürütücü Bölüm">
+                                    <input class="form-control" name="supervisor_department[{{ $index }}]" placeholder="Bölüm" value="{{ old('supervisor_department.' . $index, $supervisor->department) }}" aria-label="Yürütücü Bölüm">
                                 </div>
                             </div>
                         </td>
                         <td>
-                            <input class="form-control-file" type="file" name="supervisor_photo[{{ $supervisor->id }}]" onchange="previewImage(event, {{ $index }})">
+                            <input class="form-control-file" type="file" name="supervisor_photo[{{ $index }}]" onchange="previewImage(event, {{ $index }})">
                             @if ($supervisor->supervisor_photo)
                                 <img src="{{ asset($supervisor->supervisor_photo) }}" class="supervisor-photo" alt="Supervisor Photo" style="max-width: 100px; margin-top: 10px;">
                             @else
@@ -51,9 +52,9 @@
                 @endforeach
                 <tr>
                     <td colspan="4">
-                        {{-- <button type="button" class="btn btn-primary btn-sm" id="add-supervisor">
+                        <button type="button" class="btn btn-primary btn-sm" id="add-supervisor">
                             <i class="fa-solid fa-plus"></i> Yürütücü Ekle
-                        </button> --}}
+                        </button>
                     </td>
                 </tr>
                 
@@ -68,22 +69,23 @@
                         <td colspan="1">
                             <div class="row">
                                 <div class="col">
-                                    <input class="form-control" name="team_name[{{ $teamMember->id }}]" placeholder="Ad Soyad" value="{{ old('team_name.' . $teamMember->id, $teamMember->name) }}" aria-label="Ekip Üyesi Ad Soyad">
+                                    <input type="hidden" name="team_member_id[{{ $index }}]" value="{{ $teamMember->id }}">
+                                    <input class="form-control" name="team_name[{{ $index }}]" placeholder="Ad Soyad" value="{{ old('team_name.' . $index, $teamMember->name) }}" aria-label="Ekip Üyesi Ad Soyad">
                                 </div>
                                 <div class="col">
-                                    <input class="form-control" name="team_position[{{ $teamMember->id }}]" placeholder="Görevi" value="{{ old('team_position.' . $teamMember->id, $teamMember->position) }}" aria-label="Ekip Üyesi Görevi">
+                                    <input class="form-control" name="team_position[{{ $index }}]" placeholder="Görevi" value="{{ old('team_position.' . $index, $teamMember->position) }}" aria-label="Ekip Üyesi Görevi">
                                 </div>
                             </div>
                         </td>
-                        <td><input class="form-control" name="team_department[{{ $teamMember->id }}]" placeholder="Üniversite Bölüm" value="{{ old('team_department.' . $teamMember->id, $teamMember->department) }}" aria-label="Ekip Üyesi Bölüm"></td>
+                        <td><input class="form-control" name="team_department[{{ $index }}]" placeholder="Üniversite Bölüm" value="{{ old('team_department.' . $index, $teamMember->department) }}" aria-label="Ekip Üyesi Bölüm"></td>
                     </tr>
                 @endforeach
 
                 <tr>
                     <td colspan="4">
-                        {{-- <button type="button" class="btn btn-primary btn-sm" id="add-team-member">
+                        <button type="button" class="btn btn-primary btn-sm" id="add-team-member">
                             <i class="fa-solid fa-plus"></i> Ekip Üyesi Ekle
-                        </button> --}}
+                        </button>
                     </td>
                 </tr>
                 
@@ -106,7 +108,11 @@
         var templateRow = document.querySelector('.supervisor-template').cloneNode(true);
         templateRow.classList.remove('supervisor-template');
         templateRow.querySelectorAll('input').forEach(input => input.value = '');
-
+        
+        // Reset image
+        templateRow.querySelector('img.supervisor-photo').src = '{{ asset('storage/default-photo.png') }}';
+        
+        var newIndex = document.querySelectorAll('.supervisor-template').length;
         var supervisorsRowspan = document.getElementById('supervisors-rowspan');
         supervisorsRowspan.rowSpan = parseInt(supervisorsRowspan.rowSpan) + 1;
 
@@ -114,6 +120,10 @@
         if (labelCell) {
             labelCell.remove();
         }
+
+        templateRow.querySelectorAll('input').forEach(function(input) {
+            input.name = input.name.replace(/\[\d+\]/, '[' + newIndex + ']');
+        });
 
         document.getElementById('project-table-body').insertBefore(templateRow, this.closest('tr'));
     });
@@ -123,6 +133,7 @@
         templateRow.classList.remove('team-template');
         templateRow.querySelectorAll('input').forEach(input => input.value = '');
 
+        var newIndex = document.querySelectorAll('.team-template').length;
         var teamMembersRowspan = document.getElementById('team-members-rowspan');
         teamMembersRowspan.rowSpan = parseInt(teamMembersRowspan.rowSpan) + 1;
 
@@ -130,6 +141,10 @@
         if (labelCell) {
             labelCell.remove();
         }
+
+        templateRow.querySelectorAll('input').forEach(function(input) {
+            input.name = input.name.replace(/\[\d+\]/, '[' + newIndex + ']');
+        });
 
         document.getElementById('project-table-body').insertBefore(templateRow, this.closest('tr'));
     });
@@ -140,7 +155,7 @@
 
         reader.onload = function() {
             var dataURL = reader.result;
-            var output = document.querySelectorAll('img.supervisor-photo')[index];
+            var output = input.closest('tr').querySelector('img.supervisor-photo');
             if (output) {
                 output.src = dataURL;
             }
