@@ -223,7 +223,7 @@
     <div class="footer-content">
         <div class="logo">
             <!--Logo-->
-            <a href=""><img src="https://web.ozal.edu.tr/front/images/resim/ozal.png" alt="Logo"
+            <a href=""><img src="{{asset('projectPanel/assets/img.png')}}" alt="Logo"
                             style="width: 150px; height: 150px;"></a>
         </div>
         <div class="social-icons">
