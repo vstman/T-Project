@@ -29,8 +29,8 @@
                         <td>{{ $post->supporting_organization }}</td>
                         <td>{{ $post->project_title }}</td>
                         <td>{{ $post->project_code }}</td>
-                        <td>{{ $post->supervisor }}</td>
-                        <td>{{ $post->department }}</td>
+                        <td>{{ $post->supervisors->first()->name}}</td>
+                        <td>{{ $post->supervisors->first()->department}}</td>
                         <td>{{ $post->duration }}</td>
                         <td>{{ $post->budget }}</td>
                         <td>
