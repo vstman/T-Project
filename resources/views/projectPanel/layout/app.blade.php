@@ -232,7 +232,6 @@
                     class="fa-brands fa-instagram"></i></a>
             <a href="https://twitter.com/MTU_ozaledu" target="_blank"><i
                     class="fa-brands fa-twitter"></i></a>
-            <a href="" target="_blank"><i class="fa-brands fa-facebook"></i></a>
             <a href="https://www.youtube.com/channel/UC1vdFuS3OMIn5jwOIUyAdKQ" target="_blank"><i
                     class="fa-brands fa-youtube"></i></a>
             <a href="https://www.google.com/maps?q=" target="_blank">
