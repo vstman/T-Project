@@ -16,7 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('post_id');
             $table->string("name");
             $table->string('department');
-            $table->string('supervisor_photo')->default('default-photo.png')->change();
+            $table->string('supervisor_photo')->default('default-photo.png');
             $table->timestamps();
         });
     }
