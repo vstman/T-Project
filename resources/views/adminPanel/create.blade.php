@@ -6,30 +6,30 @@
     </a>
     <br><br>
 
-    <form action="{{ route('admin.posts.addpost') }}" method="POST" enctype="multipart/form-data">
+    <form id="post-form" action="{{ route('admin.posts.addpost') }}" method="POST" enctype="multipart/form-data">
         @csrf
         <table class="table table-bordered">
             <tbody id="project-table-body">
                 <tr>
                     <td><label for="supporting-organization" class="col-form-label">Proje Destekleyen Kurum:</label></td>
-                    <td colspan="2"><input type="text" class="form-control" id="supporting-organization" name="supporting_organization"></td>
+                    <td colspan="2"><input type="text" class="form-control" id="supporting-organization" name="supporting_organization" required></td>
                 </tr>
                 <tr>
                     <td><label for="project-title" class="col-form-label">Proje Adı ve Kodu:</label></td>
-                    <td><input class="form-control" id="project-title" name="project_title" placeholder="Proje Adı"></td>
-                    <td><input class="form-control" id="project-code" name="project_code" placeholder="Kodu"></td>
+                    <td><input class="form-control" id="project-title" name="project_title" placeholder="Proje Adı" required></td>
+                    <td><input class="form-control" id="project-code" name="project_code" placeholder="Kodu" required></td>
                 </tr>
-                <!-- Supervisors Section -->
+                 
                 <tr class="supervisor-template">
                     <td><label for="supervisor" class="col-form-label">Yürütücü:</label></td>
                     <td colspan="2">
                         <div class="d-flex flex-column">
                             <div class="d-flex align-items-center mb-2">
                                 <img class="img-thumbnail mr-2 fixed-size supervisor-photo-preview" width="100" height="100">
-                                <input type="file" class="form-control-file" name="supervisor_photo[]" accept="image/*" onchange="previewImage(event, this)">
+                                <input type="file" class="form-control-file" name="supervisor_photo[]" accept="image/*" onchange="previewImage(event, this)" required>
                             </div>
-                            <input type="text" class="form-control mb-2" name="supervisor_name[]" placeholder="Unvan Ad Soyad">
-                            <textarea class="form-control" name="supervisor_department[]" rows="3" placeholder="Yürütücü Bölüm"></textarea>
+                            <input type="text" class="form-control mb-2" name="supervisor_name[]" placeholder="Unvan Ad Soyad" required>
+                            <textarea class="form-control" name="supervisor_department[]" rows="3" placeholder="Yürütücü Bölüm" required></textarea>
                         </div>
                     </td>
                 </tr>
@@ -40,20 +40,20 @@
                         </button>
                     </td>
                 </tr>
-                <!-- Team Members Section -->
+
                 <tr class="team-template">
                     <td><label for="team" class="col-form-label">Proje Ekibi:</label></td>
                     <td colspan="1">
                         <div class="row">
                             <div class="col">
-                                <input class="form-control" name="team_name[]" placeholder="Ad Soyad">
+                                <input class="form-control" name="team_name[]" placeholder="Ad Soyad" required>
                             </div>
                             <div class="col">
-                                <input class="form-control" name="team_position[]" placeholder="Görevi">
+                                <input class="form-control" name="team_position[]" placeholder="Görevi" required>
                             </div>
                         </div>
                     </td>
-                    <td><input class="form-control" name="team_department[]" placeholder="Üniversite Bölüm"></td>
+                    <td><input class="form-control" name="team_department[]" placeholder="Üniversite Bölüm" required></td>
                 </tr>
                 <tr>
                     <td colspan="4">
@@ -62,14 +62,14 @@
                         </button>
                     </td>
                 </tr>
-                <!-- Project Details -->
+
                 <tr>
                     <td><label for="duration" class="col-form-label">Proje Süresi (Ay):</label></td>
-                    <td colspan="2"><input type="text" class="form-control" id="duration" name="duration"></td>
+                    <td colspan="2"><input type="text" class="form-control" id="duration" name="duration" required></td>
                 </tr>
                 <tr>
                     <td><label for="budget" class="col-form-label">Proje Bütçesi (TL):</label></td>
-                    <td colspan="2"><input type="text" class="form-control" id="budget" name="budget"></td>
+                    <td colspan="2"><input type="text" class="form-control" id="budget" name="budget" required></td>
                 </tr>
             </tbody>
         </table>
@@ -108,5 +108,24 @@
             };
             reader.readAsDataURL(inputElement.files[0]);
         }
+
+        // Form Validation
+        document.getElementById('post-form').addEventListener('submit', function(event) {
+            var isValid = true;
+
+            document.querySelectorAll('#post-form [required]').forEach(function(input) {
+                if (!input.value) {
+                    input.classList.add('is-invalid');
+                    isValid = false;
+                } else {
+                    input.classList.remove('is-invalid');
+                }
+            });
+
+            if (!isValid) {
+                event.preventDefault(); // Prevent form submission
+                alert('Lütfen gerekli tüm alanları doldurun.');
+            }
+        });
     </script>
 @endsection
