@@ -74,8 +74,17 @@
             </tbody>
         </table>
         <button type="submit" class="btn btn-success">Gönder</button>
+        
     </form>
-
+    @if ($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
     <script>
         // Add Supervisor Row
         document.getElementById('add-supervisor').addEventListener('click', function() {
