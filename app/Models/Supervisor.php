@@ -13,6 +13,7 @@ class Supervisor extends Model
     protected $fillable = [
         'name',
         'department',
+        'supervisor_photo',
     ];
 
     public function post() {

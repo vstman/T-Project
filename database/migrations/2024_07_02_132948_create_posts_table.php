@@ -18,7 +18,7 @@ return new class extends Migration
             $table->text('project_code');
 
             $table->string('duration');
-            $table->decimal('budget', 15, 2); 
+            $table->string('budget'); 
              
             $table->timestamps(); 
         });
