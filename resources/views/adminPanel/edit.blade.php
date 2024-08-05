@@ -62,11 +62,11 @@
                             @if ($supervisor->supervisor_photo)
                                 <img src="{{ asset($supervisor->supervisor_photo) }}"
                                      class="supervisor-photo fixed-size supervisor-photo-preview" width="100"
-                                     height="100" style="max-width: 200px; margin-top: 10px;" data-index="{{ $index }}">
+                                     height="100" style="max-width: 200px; margin-top: 10px;">
                             @else
                                 <img src="{{ asset('storage/default-photo.png') }}"
                                      class="supervisor-photo fixed-size supervisor-photo-preview" width="100"
-                                     height="100" style="max-width: 200px; margin-top: 10px;" data-index="{{ $index }}">
+                                     height="100" style="max-width: 200px; margin-top: 10px;">
                             @endif
                         </td>
                     </tr>
@@ -142,9 +142,9 @@
             templateRow.classList.remove('supervisor-template');
             templateRow.querySelectorAll('input').forEach(input => input.value = '');
 
-            // Resmi varsayılan fotoğraf olarak ayarla
+            // Reset image to default photo
             var defaultPhotoSrc = '{{ asset('storage/default-photo.png') }}';
-            templateRow.querySelectorAll('img.supervisor-photo-preview').forEach(img => img.src = defaultPhotoSrc);
+            templateRow.querySelector('img.supervisor-photo').src = defaultPhotoSrc;
 
             var newIndex = document.querySelectorAll('.supervisor-template').length;
             var supervisorsRowspan = document.getElementById('supervisors-rowspan');
@@ -159,10 +159,6 @@
                 input.name = input.name.replace(/\[\d+\]/, '[' + newIndex + ']');
             });
 
-            templateRow.querySelectorAll('img.supervisor-photo-preview').forEach(function (img) {
-                img.dataset.index = newIndex;
-            });
-
             document.getElementById('project-table-body').insertBefore(templateRow, this.closest('tr'));
         });
 
@@ -172,16 +168,15 @@
 
             reader.onload = function () {
                 var dataURL = reader.result;
-                var output = document.querySelector(`img.supervisor-photo-preview[data-index="${index}"]`);
+                var output = document.querySelector(`tr[data-index="${index}"] img.supervisor-photo`);
                 if (output) {
                     output.src = dataURL;
                 }
             };
 
-            if (input.files && input.files[0]) {
-                reader.readAsDataURL(input.files[0]);
-            }
+            reader.readAsDataURL(input.files[0]);
         }
+
 
         document.getElementById('add-team-member').addEventListener('click', function () {
             var templateRow = document.querySelector('.team-template').cloneNode(true);
@@ -204,6 +199,7 @@
             document.getElementById('project-table-body').insertBefore(templateRow, this.closest('tr'));
         });
 
+
         document.getElementById('post-form').addEventListener('submit', function (event) {
             var formIsValid = true;
 
@@ -222,5 +218,4 @@
             }
         });
     </script>
-
 @endsection
