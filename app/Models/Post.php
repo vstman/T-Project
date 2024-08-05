@@ -4,11 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Post extends Model
 {
     use HasFactory;
-    
+    use SoftDeletes;
+
     protected $table = 'posts';
     protected $primaryKey = 'id';
     protected $fillable = [
@@ -21,10 +23,14 @@ class Post extends Model
         'budget'
     ];
 
+    protected $dates = ['deleted_at'];
+    
     public function teamMembers()
     {
         return $this->hasMany(TeamMember::class);
     }
+
+    
 
     public function supervisors()
     {

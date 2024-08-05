@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('position');
             $table->string('department');
+            $table->softDeletes();
             $table->timestamps();
 
             $table->foreign('post_id')->references('id')->on('posts')->onDelete('cascade');

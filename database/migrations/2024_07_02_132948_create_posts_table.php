@@ -16,10 +16,9 @@ return new class extends Migration
             $table->string('supporting_organization');
             $table->text('project_title');
             $table->text('project_code');
-
             $table->string('duration');
             $table->string('budget'); 
-             
+            $table->softDeletes();
             $table->timestamps(); 
         });
     }

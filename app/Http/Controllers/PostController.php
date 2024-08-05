@@ -94,26 +94,36 @@ class PostController extends Controller
 
     public function update(PostRequest $request, $id)
 {
+
     $validated = $request->validated();
 
     $post = Post::find($id);
+    
+    if (!$post) {
+        return redirect()->route('admin.index')->withErrors(['error' => 'Post bulunamadı.']);
+    }
 
+    // Post bilgilerini güncelle
     $post->supporting_organization = $validated['supporting_organization'];
     $post->project_title = $validated['project_title'];
     $post->project_code = $validated['project_code'];
     $post->duration = $validated['duration'];
     $post->budget = $validated['budget'];
+    $post->save();
 
-    $supervisorIds = [];
-    if (isset($request->supervisor_id)) {
-        foreach ($request->supervisor_id as $index => $supervisorId) {
-            $supervisor = Supervisor::find($supervisorId);
-            if (!$supervisor) {
+    // Süpervizörler işlemleri
+    if (isset($request->supervisor_name)) {
+        foreach ($request->supervisor_name as $index => $name) {
+            $supervisorId = $request->supervisor_id[$index] ?? null;
+            
+            if ($supervisorId) {
+                $supervisor = Supervisor::find($supervisorId);
+            } else {
                 $supervisor = new Supervisor();
                 $supervisor->post_id = $post->id;
             }
 
-            $supervisor->name = $request->supervisor_name[$index];
+            $supervisor->name = $name;
             $supervisor->department = $request->supervisor_department[$index] ?? null;
 
             if ($request->hasFile("supervisor_photo.$index")) {
@@ -124,28 +134,43 @@ class PostController extends Controller
             }
 
             $supervisor->save();
-            $supervisorIds[] = $supervisor->id;
         }
     }
 
-    $post->supervisors()->whereNotIn('id', $supervisorIds)->delete();
+    // Ekip uyesi islemleri
+    if (isset($request->team_name)) {
+        $teamIds = $request->team_id ?? [];
 
-    $post->teamMembers()->delete(); 
-    if (!empty($validated['team_name'])) {
-        foreach ($validated['team_name'] as $key => $teamName) {
-            $teamMember = new TeamMember();
-            $teamMember->post_id = $post->id;
+        foreach ($request->team_name as $index => $teamName) {
+            $teamId = $request->team_id[$index] ?? null;
+
+            if ($teamId) {
+                $teamMember = TeamMember::find($teamId);
+                if (!$teamMember) {
+                    $teamMember = new TeamMember();
+                    $teamMember->post_id = $post->id;
+                }
+            } else {
+                $teamMember = new TeamMember();
+                $teamMember->post_id = $post->id;
+            }
+
             $teamMember->name = $teamName;
-            $teamMember->position = $validated['team_position'][$key] ?? null;
-            $teamMember->department = $validated['team_department'][$key] ?? null;
-            $teamMember->save();
-        }
-    }
+            $teamMember->position = $request->team_position[$index] ?? null;
+            $teamMember->department = $request->team_department[$index] ?? null;
 
-    $post->save();
+            $teamMember->save();
+            $teamIds[] = $teamMember->id;
+        }
+
+        TeamMember::where('post_id', $post->id)
+                  ->whereNotIn('id', $teamIds)
+                  ->forceDelete();
+    }
 
     return redirect()->route('admin.index')->with('success', 'Post başarıyla güncellendi.');
 }
+
 
 
 
@@ -184,7 +209,7 @@ class PostController extends Controller
         $post->delete();
 
         TeamMember::where('post_id', $id)->delete();
-
+        Supervisor::where('post_id' , $id)->delete();
         return redirect()->route('admin.index')->with('success', 'Başarıyla silindi.');
     }
 

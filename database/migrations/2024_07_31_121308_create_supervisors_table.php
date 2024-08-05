@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string("name");
             $table->string('department');
             $table->string('supervisor_photo')->default('default-photo.png');
+            $table->softDeletes();
             $table->timestamps();
         });
     }
