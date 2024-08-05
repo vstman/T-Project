@@ -34,7 +34,6 @@ class PostController extends Controller
     public function addPost(PostRequest $request)
 {
     try {
-        // Create the Post
         $post = new Post();
         $post->supporting_organization = $request->input('supporting_organization');
         $post->project_title = $request->input('project_title');
@@ -43,7 +42,7 @@ class PostController extends Controller
         $post->budget = $request->input('budget');
         $post->save();
 
-        // Process supervisors
+        // Supervizor Islemleri
         if ($request->has('supervisor_name')) {
             foreach ($request->input('supervisor_name') as $index => $name) {
                 $supervisor = new Supervisor();
@@ -64,7 +63,7 @@ class PostController extends Controller
             }
         }
 
-        // Process team members
+        // Ekip Uyesi Islemleri
         if ($request->has('team_name')) {
             foreach ($request->input('team_name') as $key => $teamName) {
                 $teamMember = new TeamMember();
@@ -78,7 +77,6 @@ class PostController extends Controller
         
         return redirect()->route('admin.index')->with('success', 'Post başarıyla oluşturuldu.');
     } catch (\Exception $e) {
-        dd($e);
         Log::error('Error creating post: ' . $e->getMessage());
         return redirect()->back()->withErrors(['error' => 'An error occurred while creating the post.']);
     }
