@@ -19,7 +19,7 @@
                     <td><input class="form-control" id="project-title" name="project_title" placeholder="Proje Adı" required></td>
                     <td><input class="form-control" id="project-code" name="project_code" placeholder="Kodu" required></td>
                 </tr>
-                 
+
                 <tr class="supervisor-template">
                     <td><label for="supervisor" class="col-form-label">Yürütücü:</label></td>
                     <td colspan="2">
@@ -29,7 +29,7 @@
                                 <input type="file" class="form-control-file" name="supervisor_photo[]" accept="image/*" onchange="previewImage(event, this)" required>
                             </div>
                             <input type="text" class="form-control mb-2" name="supervisor_name[]" placeholder="Unvan Ad Soyad" required>
-                            <textarea class="form-control" name="supervisor_department[]" rows="3" placeholder="Yürütücü Bölüm" required></textarea>
+                            <input type="text" class="form-control" name="supervisor_department[]" placeholder="Yürütücü Bölüm" required></input>
                         </div>
                     </td>
                 </tr>
@@ -68,7 +68,7 @@
                     <td colspan="2"><input type="text" class="form-control" id="duration" name="duration" required></td>
                 </tr>
                 <tr>
-                    <td><label for="budget" class="col-form-label">Proje Bütçesi (TL):</label></td>
+                    <td><label for="budget" class="col-form-label">Proje Bütçesi:</label></td>
                     <td colspan="2"><input type="text" class="form-control" id="budget" name="budget" required></td>
                 </tr>
             </tbody>

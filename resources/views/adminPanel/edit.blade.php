@@ -62,11 +62,11 @@
                             @if ($supervisor->supervisor_photo)
                                 <img src="{{ asset($supervisor->supervisor_photo) }}"
                                      class="supervisor-photo fixed-size supervisor-photo-preview" width="100"
-                                     height="100" style="max-width: 100px; margin-top: 10px;">
+                                     height="100" style="max-width: 200px; margin-top: 10px;" data-index="{{ $index }}">
                             @else
                                 <img src="{{ asset('storage/default-photo.png') }}"
                                      class="supervisor-photo fixed-size supervisor-photo-preview" width="100"
-                                     height="100" style="max-width: 100px; margin-top: 10px;">
+                                     height="100" style="max-width: 200px; margin-top: 10px;" data-index="{{ $index }}">
                             @endif
                         </td>
                     </tr>
@@ -125,9 +125,9 @@
                                            required></td>
                 </tr>
                 <tr>
-                    <td><label for="budget" class="col-form-label">Proje Bütçesi (TL):</label></td>
+                    <td><label for="budget" class="col-form-label">Proje Bütçesi:</label></td>
                     <td colspan="2"><input type="text" class="form-control" id="budget" name="budget"
-                                           value="{{ old('budget', $post->budget) }}" aria-label="Proje Bütçesi (TL)"
+                                           value="{{ old('budget', $post->budget) }}" aria-label="Proje Bütçesi"
                                            required></td>
                 </tr>
                 </tbody>
@@ -142,9 +142,9 @@
             templateRow.classList.remove('supervisor-template');
             templateRow.querySelectorAll('input').forEach(input => input.value = '');
 
-            // Reset image to default photo
+            // Resmi varsayılan fotoğraf olarak ayarla
             var defaultPhotoSrc = '{{ asset('storage/default-photo.png') }}';
-            templateRow.querySelector('img.supervisor-photo').src = defaultPhotoSrc;
+            templateRow.querySelectorAll('img.supervisor-photo-preview').forEach(img => img.src = defaultPhotoSrc);
 
             var newIndex = document.querySelectorAll('.supervisor-template').length;
             var supervisorsRowspan = document.getElementById('supervisors-rowspan');
@@ -159,6 +159,10 @@
                 input.name = input.name.replace(/\[\d+\]/, '[' + newIndex + ']');
             });
 
+            templateRow.querySelectorAll('img.supervisor-photo-preview').forEach(function (img) {
+                img.dataset.index = newIndex;
+            });
+
             document.getElementById('project-table-body').insertBefore(templateRow, this.closest('tr'));
         });
 
@@ -168,15 +172,16 @@
 
             reader.onload = function () {
                 var dataURL = reader.result;
-                var output = document.querySelector(`tr[data-index="${index}"] img.supervisor-photo`);
+                var output = document.querySelector(`img.supervisor-photo-preview[data-index="${index}"]`);
                 if (output) {
                     output.src = dataURL;
                 }
             };
 
-            reader.readAsDataURL(input.files[0]);
+            if (input.files && input.files[0]) {
+                reader.readAsDataURL(input.files[0]);
+            }
         }
-
 
         document.getElementById('add-team-member').addEventListener('click', function () {
             var templateRow = document.querySelector('.team-template').cloneNode(true);
@@ -199,7 +204,6 @@
             document.getElementById('project-table-body').insertBefore(templateRow, this.closest('tr'));
         });
 
-
         document.getElementById('post-form').addEventListener('submit', function (event) {
             var formIsValid = true;
 
@@ -218,4 +222,5 @@
             }
         });
     </script>
+
 @endsection

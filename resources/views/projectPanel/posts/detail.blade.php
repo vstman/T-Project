@@ -67,7 +67,7 @@
             </tr>
             <tr>
                 <td class="narrow-column"><label for="budget" class="col-form-label">Proje Bütçesi:</label></td>
-                <td colspan="2"><p id="budget">{{ $post->budget }} TL</p></td>
+                <td colspan="2"><p id="budget">{{ $post->budget }}</p></td>
             </tr>
             </tbody>
         </table>
