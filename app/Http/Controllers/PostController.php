@@ -9,6 +9,8 @@ use App\Models\Supervisor;
 use App\Models\TeamMember;
 use Illuminate\Support\Facades\DB; 
 use Illuminate\Support\Facades\Log;
+use Illuminate\Foundation\Http\FormRequest;
+use App\Http\Requests\PostRequest;
 
 class PostController extends Controller
 {
@@ -29,59 +31,58 @@ class PostController extends Controller
         return view('adminPanel.create');
     }
 
-    public function addPost(Request $request)
-    {
-        try {
-            // Create the Post
-            $post = new Post();
-            $post->supporting_organization = $request->input('supporting_organization');
-            $post->project_title = $request->input('project_title');
-            $post->project_code = $request->input('project_code');
-            $post->duration = $request->input('duration');
-            $post->budget = $request->input('budget');
-            $post->save();
-    
-            // Process supervisors
-            if ($request->has('supervisor_name')) {
-                foreach ($request->input('supervisor_name') as $index => $name) {
-                    $supervisor = new Supervisor();
-                    $supervisor->post_id = $post->id;
-                    $supervisor->name = $name;
-                    $supervisor->department = $request->input('supervisor_department')[$index] ?? null;
-    
-                    if ($request->hasFile("supervisor_photo.$index")) {
-                        $file = $request->file("supervisor_photo.$index");
-                        $filename = time() . '_' . $index . '.' . $file->getClientOriginalExtension();
-                        $filePath = $file->storeAs('supervisor_photos', $filename, 'public');
-                        $supervisor->supervisor_photo = 'storage/' . $filePath;
-                    } else {
-                        // If no photo is uploaded, set a default photo or null
-                        $supervisor->supervisor_photo = 'storage/default-photo.png'; // Adjust this path if needed
-                    }
-    
-                    $supervisor->save();
+    public function addPost(PostRequest $request)
+{
+    try {
+        // Create the Post
+        $post = new Post();
+        $post->supporting_organization = $request->input('supporting_organization');
+        $post->project_title = $request->input('project_title');
+        $post->project_code = $request->input('project_code');
+        $post->duration = $request->input('duration');
+        $post->budget = $request->input('budget');
+        $post->save();
+
+        // Process supervisors
+        if ($request->has('supervisor_name')) {
+            foreach ($request->input('supervisor_name') as $index => $name) {
+                $supervisor = new Supervisor();
+                $supervisor->post_id = $post->id;
+                $supervisor->name = $name;
+                $supervisor->department = $request->input('supervisor_department')[$index] ?? null;
+
+                if ($request->hasFile("supervisor_photo.$index")) {
+                    $file = $request->file("supervisor_photo.$index");
+                    $filename = time() . '_' . $index . '.' . $file->getClientOriginalExtension();
+                    $filePath = $file->storeAs('supervisor_photos', $filename, 'public');
+                    $supervisor->supervisor_photo = 'storage/' . $filePath;
+                } else {
+                    $supervisor->supervisor_photo = 'storage/default-photo.png';
                 }
+
+                $supervisor->save();
             }
-    
-            // Process team members
-            if ($request->has('team_name')) {
-                foreach ($request->input('team_name') as $key => $teamName) {
-                    $teamMember = new TeamMember();
-                    $teamMember->post_id = $post->id;
-                    $teamMember->name = $teamName;
-                    $teamMember->position = $request->input('team_position')[$key] ?? null;
-                    $teamMember->department = $request->input('team_department')[$key] ?? null;
-                    $teamMember->save();
-                }
-            }
-            
-            return redirect()->route('admin.index')->with('success', 'Post başarıyla oluşturuldu.');
-        } catch (\Exception $e) {
-            dd($e);
-            Log::error('Error creating post: ' . $e->getMessage());
-            return redirect()->back()->withErrors(['error' => 'An error occurred while creating the post.']);
         }
+
+        // Process team members
+        if ($request->has('team_name')) {
+            foreach ($request->input('team_name') as $key => $teamName) {
+                $teamMember = new TeamMember();
+                $teamMember->post_id = $post->id;
+                $teamMember->name = $teamName;
+                $teamMember->position = $request->input('team_position')[$key] ?? null;
+                $teamMember->department = $request->input('team_department')[$key] ?? null;
+                $teamMember->save();
+            }
+        }
+        
+        return redirect()->route('admin.index')->with('success', 'Post başarıyla oluşturuldu.');
+    } catch (\Exception $e) {
+        dd($e);
+        Log::error('Error creating post: ' . $e->getMessage());
+        return redirect()->back()->withErrors(['error' => 'An error occurred while creating the post.']);
     }
+}
     
 
     
@@ -91,25 +92,12 @@ class PostController extends Controller
         return view('adminPanel.edit', compact('post'));
     }
 
-    public function update(Request $request, $id)
-    {
-    $validated = $request->validate([
-        'supporting_organization' => 'required|string|max:255',
-        'project_title' => 'required|string|max:255',
-        'project_code' => 'required|string|max:50',
-        'duration' => 'required|integer',
-        'budget' => 'required|numeric',
-        'supervisor_name.*' => 'nullable|string|max:255',
-        'supervisor_department.*' => 'nullable|string|max:255',
-        'supervisor_photo.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-        'team_name.*' => 'nullable|string|max:255',
-        'team_position.*' => 'nullable|string|max:255',
-        'team_department.*' => 'nullable|string|max:255',
-    ]);
+    public function update(PostRequest $request, $id)
+{
+    $validated = $request->validated();
 
     $post = Post::find($id);
 
-    // Güncellenen Post bilgileri
     $post->supporting_organization = $validated['supporting_organization'];
     $post->project_title = $validated['project_title'];
     $post->project_code = $validated['project_code'];
@@ -140,10 +128,9 @@ class PostController extends Controller
         }
     }
 
-    // Kalan supervisor'ları sil
     $post->supervisors()->whereNotIn('id', $supervisorIds)->delete();
 
-    $post->teamMembers()->delete(); // Mevcut ekip üyelerini sil
+    $post->teamMembers()->delete(); 
     if (!empty($validated['team_name'])) {
         foreach ($validated['team_name'] as $key => $teamName) {
             $teamMember = new TeamMember();
@@ -159,6 +146,7 @@ class PostController extends Controller
 
     return redirect()->route('admin.index')->with('success', 'Post başarıyla güncellendi.');
 }
+
 
 
 
@@ -201,7 +189,7 @@ class PostController extends Controller
     }
 
     public function search(Request $request)
-{
+  {
     if ($request->ajax()) {
         $posts = Post::where('project_title', 'LIKE', '%'.$request->search.'%')
                      ->orWhere('supporting_organization', 'LIKE', '%'.$request->search.'%')
