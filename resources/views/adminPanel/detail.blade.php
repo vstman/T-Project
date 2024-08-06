@@ -68,7 +68,7 @@
             </tbody>
         </table>
         <a href="{{ route('admin.posts.edit', $post->uuid) }}" class="btn btn-success">Düzenle</a>
-        <button class="btn btn-danger" onclick="confirmDeletion('{{ route('admin.posts.destroy', $post->id) }}')">Sil
+        <button class="btn btn-danger" onclick="confirmDeletion('{{ route('admin.posts.destroy', $post->uuid) }}')">Sil
         </button>
     </div>
 
