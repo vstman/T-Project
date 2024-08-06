@@ -12,8 +12,7 @@ class UserController extends Controller
 {
     public function index()
     {
-        $users = User::all();
-    
+        $users = User::where('role_id', '!=', 1)->get(); // Superadmin hariç tüm kullanıcılar
         return view('adminPanel.users.index', compact('users'));
     }
 

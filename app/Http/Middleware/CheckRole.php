@@ -7,12 +7,12 @@ use Illuminate\Support\Facades\Auth;
 
 class CheckRole
 {
-    public function handle($request, Closure $next, $role)
+    public function handle($request, Closure $next, ...$roles)
     {
-        if (Auth::check() && Auth::user()->role_id === 1) {
+        if (Auth::check() && in_array(Auth::user()->role_id, $roles)) {
             return $next($request);
         }
 
-        return redirect('/'); // Or wherever you want to redirect unauthorized users
+        return redirect('/login');
     }
 }

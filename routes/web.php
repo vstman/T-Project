@@ -16,7 +16,7 @@ use App\Http\Controllers\LoginController;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-Route::group(['middleware' => ['role:admin']], function() {
+Route::middleware(['role:1,2'])->group(function () {
     Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('/', [PostController::class, 'admin_index'])->name('index');
         Route::get('/posts/create', [PostController::class, 'create'])->name('posts.create');
@@ -27,16 +27,20 @@ Route::group(['middleware' => ['role:admin']], function() {
         Route::delete('/posts/{id}', [PostController::class, 'destroy'])->name('posts.destroy');
         Route::get('/details/{id}', [PostController::class, 'admin_details'])->name('admin_details');
         
-        //users
-        Route::get('users/create', [UserController::class, 'create'])->name('users.create');
-        Route::get('users', [UserController::class, 'index'])->name('users.index');
-        Route::post('users', [UserController::class, 'store'])->name('users.store');
-        Route::delete('/users/{id}', [UserController::class, 'destroy'])->name('users.destroy');
+        
    
     });
 });
 
 
+    Route::middleware(['role:1'])->group(function () {
+        Route::prefix('admin')->name('admin.')->group(function () {
+        Route::get('users/create', [UserController::class, 'create'])->name('users.create');
+        Route::get('users', [UserController::class, 'index'])->name('users.index');
+        Route::post('users', [UserController::class, 'store'])->name('users.store');
+        Route::delete('/users/{id}', [UserController::class, 'destroy'])->name('users.destroy');
+        });
+    });
 
 // Post İşlemleri Başlangıç
 
