@@ -26,7 +26,7 @@ class RedirectIfAuthenticated
         }
 
         // Kullanıcı giriş yapmamışsa belirli bir sayfaya yönlendir
-        return redirect()->abort(404);
+        abort(404);
 
     }
 }
