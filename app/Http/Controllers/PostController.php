@@ -7,9 +7,8 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Post;
 use App\Models\Supervisor;
 use App\Models\TeamMember;
-use Illuminate\Support\Facades\DB; 
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Foundation\Http\FormRequest;
 use App\Http\Requests\PostRequest;
 
 class PostController extends Controller
@@ -32,145 +31,143 @@ class PostController extends Controller
     }
 
     public function addPost(PostRequest $request)
-{
-    try {
-        $post = new Post();
-        $post->supporting_organization = $request->input('supporting_organization');
-        $post->project_title = $request->input('project_title');
-        $post->project_code = $request->input('project_code');
-        $post->duration = $request->input('duration');
-        $post->budget = $request->input('budget');
-        $post->save();
-
-        // Supervizor Islemleri
-        if ($request->has('supervisor_name')) {
-            foreach ($request->input('supervisor_name') as $index => $name) {
-                $supervisor = new Supervisor();
-                $supervisor->post_id = $post->id;
-                $supervisor->name = $name;
-                $supervisor->department = $request->input('supervisor_department')[$index] ?? null;
-
-                if ($request->hasFile("supervisor_photo.$index")) {
-                    $file = $request->file("supervisor_photo.$index");
-                    $filename = time() . '_' . $index . '.' . $file->getClientOriginalExtension();
-                    $filePath = $file->storeAs('supervisor_photos', $filename, 'public');
-                    $supervisor->supervisor_photo = 'storage/' . $filePath;
-                } else {
-                    $supervisor->supervisor_photo = 'storage/default-photo.png';
-                }
-
-                $supervisor->save();
-            }
-        }
-
-        // Ekip Uyesi Islemleri
-        if ($request->has('team_name')) {
-            foreach ($request->input('team_name') as $key => $teamName) {
-                $teamMember = new TeamMember();
-                $teamMember->post_id = $post->id;
-                $teamMember->name = $teamName;
-                $teamMember->position = $request->input('team_position')[$key] ?? null;
-                $teamMember->department = $request->input('team_department')[$key] ?? null;
-                $teamMember->save();
-            }
-        }
-        
-        return redirect()->route('admin.index')->with('success', 'Post başarıyla oluşturuldu.');
-    } catch (\Exception $e) {
-        Log::error('Error creating post: ' . $e->getMessage());
-        return redirect()->back()->withErrors(['error' => 'An error occurred while creating the post.']);
-    }
-}
-    
-
-    
-    public function edit($id)
     {
-        $post = Post::find($id);
+        try {
+            $post = new Post();
+            $post->supporting_organization = $request->input('supporting_organization');
+            $post->project_title = $request->input('project_title');
+            $post->project_code = $request->input('project_code');
+            $post->duration = $request->input('duration');
+            $post->budget = $request->input('budget');
+            $post->uuid = (string) \Illuminate\Support\Str::uuid(); // UUID ekle
+            $post->save();
+
+            // Süpervizör İşlemleri
+            if ($request->has('supervisor_name')) {
+                foreach ($request->input('supervisor_name') as $index => $name) {
+                    $supervisor = new Supervisor();
+                    $supervisor->post_id = $post->id;
+                    $supervisor->name = $name;
+                    $supervisor->department = $request->input('supervisor_department')[$index] ?? null;
+
+                    if ($request->hasFile("supervisor_photo.$index")) {
+                        $file = $request->file("supervisor_photo.$index");
+                        $filename = time() . '_' . $index . '.' . $file->getClientOriginalExtension();
+                        $filePath = $file->storeAs('supervisor_photos', $filename, 'public');
+                        $supervisor->supervisor_photo = 'storage/' . $filePath;
+                    } else {
+                        $supervisor->supervisor_photo = 'storage/default-photo.png';
+                    }
+
+                    $supervisor->save();
+                }
+            }
+
+            // Ekip Üyesi İşlemleri
+            if ($request->has('team_name')) {
+                foreach ($request->input('team_name') as $key => $teamName) {
+                    $teamMember = new TeamMember();
+                    $teamMember->post_id = $post->id;
+                    $teamMember->name = $teamName;
+                    $teamMember->position = $request->input('team_position')[$key] ?? null;
+                    $teamMember->department = $request->input('team_department')[$key] ?? null;
+                    $teamMember->save();
+                }
+            }
+
+            return redirect()->route('admin.index')->with('success', 'Post başarıyla oluşturuldu.');
+        } catch (\Exception $e) {
+            Log::error('Error creating post: ' . $e->getMessage());
+            return redirect()->back()->withErrors(['error' => 'An error occurred while creating the post.']);
+        }
+    }
+
+    public function edit($uuid)
+    {
+        $post = Post::where('uuid', $uuid)->first();
         if (!$post) {
             abort(404, 'Post not found');
         }
         return view('adminPanel.edit', compact('post'));
     }
 
-    public function update(PostRequest $request, $id)
-{
+    public function update(PostRequest $request, $uuid)
+    {
+        $validated = $request->validated();
 
-    $validated = $request->validated();
+        $post = Post::where('uuid', $uuid)->first();
 
-    $post = Post::find($id);
-    
-    if (!$post) {
-        return redirect()->route('admin.index')->withErrors(['error' => 'Post bulunamadı.']);
-    }
-
-    // Post bilgilerini güncelle
-    $post->supporting_organization = $validated['supporting_organization'];
-    $post->project_title = $validated['project_title'];
-    $post->project_code = $validated['project_code'];
-    $post->duration = $validated['duration'];
-    $post->budget = $validated['budget'];
-    $post->save();
-
-    // Süpervizörler işlemleri
-    if (isset($request->supervisor_name)) {
-        foreach ($request->supervisor_name as $index => $name) {
-            $supervisorId = $request->supervisor_id[$index] ?? null;
-            
-            if ($supervisorId) {
-                $supervisor = Supervisor::find($supervisorId);
-            } else {
-                $supervisor = new Supervisor();
-                $supervisor->post_id = $post->id;
-            }
-
-            $supervisor->name = $name;
-            $supervisor->department = $request->supervisor_department[$index] ?? null;
-
-            if ($request->hasFile("supervisor_photo.$index")) {
-                $file = $request->file("supervisor_photo.$index");
-                $filename = time() . '_' . $index . '.' . $file->getClientOriginalExtension();
-                $filePath = $file->storeAs('supervisor_photos', $filename, 'public');
-                $supervisor->supervisor_photo = 'storage/' . $filePath;
-            }
-
-            $supervisor->save();
+        if (!$post) {
+            return redirect()->route('admin.index')->withErrors(['error' => 'Post bulunamadı.']);
         }
-    }
 
-    // Ekip uyesi islemleri
-    if (isset($request->team_name)) {
-        $teamIds = $request->team_id ?? [];
+        // Post bilgilerini güncelle
+        $post->supporting_organization = $validated['supporting_organization'];
+        $post->project_title = $validated['project_title'];
+        $post->project_code = $validated['project_code'];
+        $post->duration = $validated['duration'];
+        $post->budget = $validated['budget'];
+        $post->save();
 
-        foreach ($request->team_name as $index => $teamName) {
-            $teamId = $request->team_id[$index] ?? null;
+        // Süpervizörler İşlemleri
+        if (isset($request->supervisor_name)) {
+            foreach ($request->supervisor_name as $index => $name) {
+                $supervisorId = $request->supervisor_id[$index] ?? null;
 
-            if ($teamId) {
-                $teamMember = TeamMember::find($teamId);
-                if (!$teamMember) {
+                if ($supervisorId) {
+                    $supervisor = Supervisor::find($supervisorId);
+                } else {
+                    $supervisor = new Supervisor();
+                    $supervisor->post_id = $post->id;
+                }
+
+                $supervisor->name = $name;
+                $supervisor->department = $request->supervisor_department[$index] ?? null;
+
+                if ($request->hasFile("supervisor_photo.$index")) {
+                    $file = $request->file("supervisor_photo.$index");
+                    $filename = time() . '_' . $index . '.' . $file->getClientOriginalExtension();
+                    $filePath = $file->storeAs('supervisor_photos', $filename, 'public');
+                    $supervisor->supervisor_photo = 'storage/' . $filePath;
+                }
+
+                $supervisor->save();
+            }
+        }
+
+        // Ekip Üyesi İşlemleri
+        if (isset($request->team_name)) {
+            $teamIds = $request->team_id ?? [];
+
+            foreach ($request->team_name as $index => $teamName) {
+                $teamId = $request->team_id[$index] ?? null;
+
+                if ($teamId) {
+                    $teamMember = TeamMember::find($teamId);
+                    if (!$teamMember) {
+                        $teamMember = new TeamMember();
+                        $teamMember->post_id = $post->id;
+                    }
+                } else {
                     $teamMember = new TeamMember();
                     $teamMember->post_id = $post->id;
                 }
-            } else {
-                $teamMember = new TeamMember();
-                $teamMember->post_id = $post->id;
+
+                $teamMember->name = $teamName;
+                $teamMember->position = $request->team_position[$index] ?? null;
+                $teamMember->department = $request->team_department[$index] ?? null;
+
+                $teamMember->save();
+                $teamIds[] = $teamMember->id;
             }
 
-            $teamMember->name = $teamName;
-            $teamMember->position = $request->team_position[$index] ?? null;
-            $teamMember->department = $request->team_department[$index] ?? null;
-
-            $teamMember->save();
-            $teamIds[] = $teamMember->id;
+            TeamMember::where('post_id', $post->id)
+                ->whereNotIn('id', $teamIds)
+                ->forceDelete();
         }
 
-        TeamMember::where('post_id', $post->id)
-                  ->whereNotIn('id', $teamIds)
-                  ->forceDelete();
+        return redirect()->route('admin.index')->with('success', 'Post başarıyla güncellendi.');
     }
-
-    return redirect()->route('admin.index')->with('success', 'Post başarıyla güncellendi.');
-}
 
     public function upload(Request $request)
     {
@@ -187,45 +184,46 @@ class PostController extends Controller
         }
     }
 
-    public function details($id)
+    public function details($uuid)
     {
-        $post = Post::find($id);
+        $post = Post::where('uuid', $uuid)->firstOrFail();
         if (!$post) {
             abort(404, 'Post not found');
         }
         return view('projectPanel.posts.detail', compact('post'));
     }
 
-    public function admin_details($id)
+    public function admin_details($uuid)
     {
-        $post = Post::find($id);
+        $post = Post::where('uuid', $uuid)->firstOrFail();
         if (!$post) {
             abort(404, 'Post not found');
         }
         return view('adminPanel.detail', compact('post'));
     }
 
-    public function destroy($id)
+    public function destroy($uuid)
     {
-        $post = Post::findOrFail($id);
+        $post = Post::where('uuid', $uuid)->firstOrFail();
         $post->delete();
 
-        TeamMember::where('post_id', $id)->delete();
-        Supervisor::where('post_id' , $id)->delete();
+        TeamMember::where('post_id', $post->id)->delete();
+        Supervisor::where('post_id', $post->id)->delete();
+
         return redirect()->route('admin.index')->with('success', 'Başarıyla silindi.');
     }
 
     public function search(Request $request)
-  {
-    if ($request->ajax()) {
-        $posts = Post::where('project_title', 'LIKE', '%'.$request->search.'%')
-                     ->orWhere('supporting_organization', 'LIKE', '%'.$request->search.'%')
-                     ->orWhere('project_code', 'LIKE', '%'.$request->search.'%')
-                     ->get();
+    {
+        if ($request->ajax()) {
+            $posts = Post::where('project_title', 'LIKE', '%'.$request->search.'%')
+                ->orWhere('supporting_organization', 'LIKE', '%'.$request->search.'%')
+                ->orWhere('project_code', 'LIKE', '%'.$request->search.'%')
+                ->get();
 
-        $view = view('projectPanel.posts.partials.post-list', compact('posts'))->render();
+            $view = view('projectPanel.posts.partials.post-list', compact('posts'))->render();
 
-        return response()->json(['html' => $view]);
+            return response()->json(['html' => $view]);
+        }
     }
-}
 }

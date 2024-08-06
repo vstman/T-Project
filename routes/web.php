@@ -25,7 +25,7 @@ Route::middleware(['role:1,2'])->group(function () {
         Route::post('/posts', [PostController::class, 'addPost'])->name('posts.addpost');
         Route::post('/upload', [PostController::class, 'upload'])->name('ckeditor.upload');
         Route::delete('/posts/{id}', [PostController::class, 'destroy'])->name('posts.destroy');
-        Route::get('/details/{id}', [PostController::class, 'admin_details'])->name('admin_details');
+        Route::get('/details/{uuid}', [PostController::class, 'admin_details'])->name('admin_details');
     });
 });
 
@@ -47,7 +47,7 @@ Route::get('/details/{id}' , [PostController::class , 'details'])->name('posts.d
 Route::get('/search', [PostController::class, 'search'])->name('posts.search');
 Route::get('/', [PostController::class, 'index'])->name('posts.main');
 Route::get('/posts', [PostController::class, 'index'])->name('posts.index');
-Route::get('/details/{id}', [PostController::class, 'details'])->name('posts.details');
+Route::get('/details/{uuid}', [PostController::class, 'details'])->name('posts.details');
 
 // Post İşlemleri Bitiş
 

@@ -13,13 +13,14 @@ return new class extends Migration
     {
         Schema::create('posts', function (Blueprint $table) {
             $table->id();
+            $table->uuid('uuid')->unique();
             $table->string('supporting_organization');
             $table->text('project_title');
             $table->text('project_code');
             $table->string('duration');
-            $table->string('budget'); 
+            $table->string('budget');
             $table->softDeletes();
-            $table->timestamps(); 
+            $table->timestamps();
         });
     }
 

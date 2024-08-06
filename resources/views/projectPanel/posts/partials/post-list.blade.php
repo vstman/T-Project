@@ -1,6 +1,6 @@
 @foreach($posts as $post)
     <div class="col-md-3 mb-2">
-        <a href="{{ route('posts.details', $post->id) }}" class="card-link">
+        <a href="{{ route('posts.details', $post->uuid) }}" class="card-link">
             <div class="card mb-3 special-card">
                 <div class="card-body d-flex flex-column">
                     <div class="d-flex justify-content-between align-items-center w-100">
