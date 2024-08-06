@@ -11,8 +11,11 @@ class PostRequest extends FormRequest
         return true;
     }
 
-     //@return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
-     
+    /**
+     * Get the validation rules that apply to the request.
+     *
+     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     */
     public function rules(): array
     {
         return [
@@ -29,6 +32,12 @@ class PostRequest extends FormRequest
             'team_department.*' => 'nullable|string|max:255',
         ];
     }
+
+    /**
+     * Customize the error messages for the request.
+     *
+     * @return array<string, string>
+     */
     public function messages(): array
     {
         return [
@@ -47,9 +56,9 @@ class PostRequest extends FormRequest
             'supervisor_name.*.max' => 'Her bir süpervizör adı en fazla :max karakter uzunluğunda olabilir.',
             'supervisor_department.*.string' => 'Her bir süpervizör departmanı bir metin olmalıdır.',
             'supervisor_department.*.max' => 'Her bir süpervizör departmanı en fazla :max karakter uzunluğunda olabilir.',
-            'supervisor_photo.*.image' => 'Her bir süpervizör fotoğrafı bir resim olmalıdır.',
-            'supervisor_photo.*.mimes' => 'Her bir süpervizör fotoğrafı yalnızca :values uzantılarına sahip dosyalar olabilir.',
-            'supervisor_photo.*.max' => 'Her bir süpervizör fotoğrafı en fazla :max kilobayt uzunluğunda olabilir.',
+            'supervisor_photo.*.image' => 'Her bir süpervizör fotoğrafı geçerli bir resim dosyası olmalıdır.',
+            'supervisor_photo.*.mimes' => 'Süpervizör fotoğrafları sadece :values uzantılarına sahip dosyalar olabilir.',
+            'supervisor_photo.*.max' => 'Süpervizör fotoğrafları en fazla :max kilobayt uzunluğunda olabilir.',
             'team_name.*.string' => 'Her bir takım adı bir metin olmalıdır.',
             'team_name.*.max' => 'Her bir takım adı en fazla :max karakter uzunluğunda olabilir.',
             'team_position.*.string' => 'Her bir takım pozisyonu bir metin olmalıdır.',
