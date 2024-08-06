@@ -87,6 +87,9 @@ class PostController extends Controller
     public function edit($id)
     {
         $post = Post::find($id);
+        if (!$post) {
+            abort(404, 'Post not found');
+        }
         return view('adminPanel.edit', compact('post'));
     }
 
@@ -187,12 +190,18 @@ class PostController extends Controller
     public function details($id)
     {
         $post = Post::find($id);
+        if (!$post) {
+            abort(404, 'Post not found');
+        }
         return view('projectPanel.posts.detail', compact('post'));
     }
 
     public function admin_details($id)
     {
         $post = Post::find($id);
+        if (!$post) {
+            abort(404, 'Post not found');
+        }
         return view('adminPanel.detail', compact('post'));
     }
 

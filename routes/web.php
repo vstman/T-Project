@@ -26,9 +26,6 @@ Route::middleware(['role:1,2'])->group(function () {
         Route::post('/upload', [PostController::class, 'upload'])->name('ckeditor.upload');
         Route::delete('/posts/{id}', [PostController::class, 'destroy'])->name('posts.destroy');
         Route::get('/details/{id}', [PostController::class, 'admin_details'])->name('admin_details');
-        
-        
-   
     });
 });
 

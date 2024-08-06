@@ -86,9 +86,13 @@
                                 <li>
                                     <a href="{{ route('admin.users.index') }}">Kullanıcılar</a>
                                 </li>
-                                <li>
+                               
+                                    @if (Auth::check() && Auth::user()->role_id === 1)
+                                    <li>
                                     <a href="{{ route('admin.users.create') }}">Yeni Kullanıcı Ekle</a>
-                                </li>
+                                    </li>
+                                    @endif
+                                
                             </ul>
                         </div>
                     </li>
