@@ -1,72 +1,44 @@
-@extends('projectPanel.layout.app')
-@section('style_content')
-    <style>
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Giriş Yap</title>
+    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card mt-5">
+                    <div class="card-header">Giriş Yap</div>
+                    <div class="card-body">
+                        @if ($errors->any())
+                            <div class="alert alert-danger">
+                                <ul>
+                                    @foreach ($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        @endif
 
-        .content {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh; /* Yüksekliği tüm ekran boyu yap */
-        }
-
-
-        .alert {
-            margin-bottom: 15px;
-            padding: 10px;
-            border: 1px solid transparent;
-            border-radius: 4px;
-            position: absolute;
-            bottom: 20px;
-            z-index: 2;
-            width: 320px;
-            left: 50%;
-            transform: translateX(-50%);
-        }
-
-        .alert-danger {
-            color: #a94442;
-            background-color: #f2dede;
-            border-color: #ebccd1;
-        }
-    </style>
-@endsection
-@section('content')
-    <div class="container content">
-        <div class="form-container">
-            @if(session('error'))
-                <div class="alert alert-danger" role="alert">
-                    {{ session('error') }}
+                        <form method="POST" action="{{ route('login') }}">
+                            @csrf
+                            <div class="form-group">
+                                <label for="email">E-posta</label>
+                                <input type="email" id="email" class="form-control" name="email" required autofocus>
+                            </div>
+                            <div class="form-group">
+                                <label for="password">Şifre</label>
+                                <input type="password" id="password" class="form-control" name="password" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Giriş Yap</button>
+                        </form>
+                    </div>
                 </div>
-            @endif
-            <h2 style="text-align: center">GİRİŞ</h2>
-            <form action="{{ route('login.post') }}" method="POST" class="ms-auto me-auto mt-auto"
-                  style="width: 500px;">
-                @csrf
-                <div class="mb-3">
-                    <input type="text" id="email" name="email" class="form-control" required
-                           placeholder="E-Posta">
-                </div>
-                <div class="mb-3">
-                    <input type="password" id="password" name="password" class="form-control" required
-                           placeholder="Şifre">
-                </div>
-                <div class="mb-3">
-                    <a href="{{route('register')}}" class="forgot-link">Kayıt Ol</a>
-                </div>
-                <div class="mb-3 text-center">
-                    <button type="submit" class="btn btn-primary">Giriş Yap</button>
-                </div>
-            </form>
+            </div>
         </div>
     </div>
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            var alertBox = document.querySelector('.alert');
-            if (alertBox) {
-                setTimeout(function () {
-                    alertBox.style.display = 'none';
-                }, 5000); // 5000 milisaniye (5 saniye) sonra kaybolur
-            }
-        });
-    </script>
-@endsection
+</body>
+</html>

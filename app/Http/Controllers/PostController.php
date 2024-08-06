@@ -169,11 +169,6 @@ class PostController extends Controller
     return redirect()->route('admin.index')->with('success', 'Post başarıyla güncellendi.');
 }
 
-
-
-
-
-
     public function upload(Request $request)
     {
         if ($request->hasFile('upload')) {

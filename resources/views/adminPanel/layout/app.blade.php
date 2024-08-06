@@ -88,10 +88,14 @@
                                 <li>
                                     <a href="{{ route('admin.index') }}">Projeleri Yönet</a>
                                 </li>
+                                
                             </ul>
                         </div>
                     </li>
                     <br>
+                    <li>
+                        <a href="{{ route('admin.users.create') }}"  class="nav-item menu">Yeni Kullanıcı Ekle</a>
+                    </li>
                     <li class="nav-item submenu">
                         <form id="navigate-form" action="{{ route('posts.main') }}" method="GET" style="display: none;" target="_blank">
                             @csrf
