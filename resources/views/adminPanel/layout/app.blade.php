@@ -76,6 +76,7 @@
                         </div>
                     </li>
                     <br>
+                    @if (Auth::check() && Auth::user()->role_id === 1)
                     <li class="nav-item submenu">
                         <a data-bs-toggle="collapse" href="#userManageCollapse" class="collapsed" aria-expanded="false">
                             <i class="fas fa-users"></i>
@@ -86,17 +87,18 @@
                                 <li>
                                     <a href="{{ route('admin.users.index') }}">Kullanıcılar</a>
                                 </li>
-                               
-                                    @if (Auth::check() && Auth::user()->role_id === 1)
+
+
                                     <li>
                                     <a href="{{ route('admin.users.create') }}">Yeni Kullanıcı Ekle</a>
                                     </li>
-                                    @endif
-                                
+
+
                             </ul>
                         </div>
                     </li>
-                    <br>
+
+                    <br>@endif
                     <li class="nav-item submenu">
                         <form id="navigate-form" action="{{ route('posts.main') }}" method="GET" style="display: none;" target="_blank">
                             @csrf
