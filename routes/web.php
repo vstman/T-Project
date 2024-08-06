@@ -21,7 +21,7 @@ Route::middleware(['role:1,2'])->group(function () {
         Route::get('/', [PostController::class, 'admin_index'])->name('index');
         Route::get('/posts/create', [PostController::class, 'create'])->name('posts.create');
         Route::get('/posts/{id}/edit', [PostController::class, 'edit'])->name('posts.edit');
-        Route::put('/posts/{id}', [PostController::class, 'update'])->name('posts.update');
+        Route::put('/posts/{uuid}', [PostController::class, 'update'])->name('posts.update');
         Route::post('/posts', [PostController::class, 'addPost'])->name('posts.addpost');
         Route::post('/upload', [PostController::class, 'upload'])->name('ckeditor.upload');
         Route::delete('/posts/{id}', [PostController::class, 'destroy'])->name('posts.destroy');
