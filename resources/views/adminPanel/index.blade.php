@@ -37,7 +37,7 @@
                             <a href="{{ route('admin.posts.edit', $post->uuid) }}" class="btn btn-success">Düzenle</a>
                             <a href="{{ route('admin.admin_details', $post->uuid) }}" class="btn btn-secondary">Detay</a>
                             <button class="btn btn-danger"
-                                    onclick="confirmDeletion('{{ route('admin.posts.destroy', $post->id) }}')">Sil
+                                    onclick="confirmDeletion('{{ route('admin.posts.destroy', $post->uuid) }}')">Sil
                             </button>
                         </td>
                     </tr>

@@ -24,7 +24,7 @@ Route::middleware(['role:1,2'])->group(function () {
         Route::put('/posts/{uuid}', [PostController::class, 'update'])->name('posts.update');
         Route::post('/posts', [PostController::class, 'addPost'])->name('posts.addpost');
         Route::post('/upload', [PostController::class, 'upload'])->name('ckeditor.upload');
-        Route::delete('/posts/{id}', [PostController::class, 'destroy'])->name('posts.destroy');
+        Route::delete('/posts/{uuid}', [PostController::class, 'destroy'])->name('posts.destroy');
         Route::get('/details/{uuid}', [PostController::class, 'admin_details'])->name('admin_details');
     });
 });
