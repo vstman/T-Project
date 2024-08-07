@@ -83,12 +83,24 @@
         $(document).ready(function () {
             $('#search').on('keyup', function() {
                 var value = $(this).val();
+                if (value.length > 0) {
+                    $('#search-status').text('Aranıyor...');
+                } else {
+                    $('#search-status').empty();
+                    $('#results').empty();
+                    return;
+                }
+
                 $.ajax({
                     type: "GET",
                     url: "{{ route('posts.search') }}",
                     data: { search: value },
                     success: function (data) {
-                        $('#results').html(data.html); // Inject the returned HTML
+                        $('#search-status').empty();
+                        $('#results').html(data.html);
+                        if (!data.found) {
+                            $('#results').html('<p>Sonuç bulunamadı.</p>');
+                        }
                     }
                 });
             });

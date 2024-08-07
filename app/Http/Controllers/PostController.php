@@ -222,8 +222,9 @@ class PostController extends Controller
                 ->get();
 
             $view = view('projectPanel.posts.partials.post-list', compact('posts'))->render();
+            $found = count($posts) > 0;
 
-            return response()->json(['html' => $view]);
+            return response()->json(['html' => $view, 'found' => $found]);
         }
     }
 }
