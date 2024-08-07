@@ -28,7 +28,7 @@ class Post extends Model
     {
         parent::boot();
         self::creating(function ($model) {
-            $model->uuid = (string) Str::uuid();
+            $model->slug = Str::slug($model->project_title, '-');
         });
     }
 

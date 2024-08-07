@@ -6,7 +6,7 @@
             <i class="fas fa-arrow-left"></i> Geri
         </a>
         <br><br>
-        <form id="post-form" action="{{ route('admin.posts.update', ['uuid' => $post->uuid]) }}" method="POST" enctype="multipart/form-data">
+        <form id="post-form" action="{{ route('admin.posts.update', ['slug' => $post->slug]) }}" method="POST" enctype="multipart/form-data">
             @csrf
             @method('PUT')
             <table class="table table-bordered">

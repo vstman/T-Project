@@ -39,7 +39,7 @@ class PostController extends Controller
             $post->project_code = $request->input('project_code');
             $post->duration = $request->input('duration');
             $post->budget = $request->input('budget');
-            $post->uuid = (string) \Illuminate\Support\Str::uuid(); // UUID ekle
+            $post->slug = \Illuminate\Support\Str::slug($post->project_title, '-'); // Slug ekle
             $post->save();
 
             // Süpervizör İşlemleri
@@ -82,20 +82,20 @@ class PostController extends Controller
         }
     }
 
-    public function edit($uuid)
+    public function edit($slug)
     {
-        $post = Post::where('uuid', $uuid)->first();
+        $post = Post::where('slug', $slug)->first();
         if (!$post) {
             abort(404, 'Post not found');
         }
         return view('adminPanel.edit', compact('post'));
     }
 
-    public function update(PostRequest $request, $uuid)
+    public function update(PostRequest $request, $slug)
     {
         $validated = $request->validated();
 
-        $post = Post::where('uuid', $uuid)->first();
+        $post = Post::where('slug', $slug)->first();
 
         if (!$post) {
             return redirect()->route('admin.index')->withErrors(['error' => 'Post bulunamadı.']);
@@ -184,27 +184,27 @@ class PostController extends Controller
         }
     }
 
-    public function details($uuid)
+    public function details($slug)
     {
-        $post = Post::where('uuid', $uuid)->firstOrFail();
+        $post = Post::where('slug', $slug)->firstOrFail();
         if (!$post) {
             abort(404, 'Post not found');
         }
         return view('projectPanel.posts.detail', compact('post'));
     }
 
-    public function admin_details($uuid)
+    public function admin_details($slug)
     {
-        $post = Post::where('uuid', $uuid)->firstOrFail();
+        $post = Post::where('slug', $slug)->firstOrFail();
         if (!$post) {
             abort(404, 'Post not found');
         }
         return view('adminPanel.detail', compact('post'));
     }
 
-    public function destroy($uuid)
+    public function destroy($slug)
     {
-        $post = Post::where('uuid', $uuid)->firstOrFail();
+        $post = Post::where('slug', $slug)->firstOrFail();
         $post->delete();
 
         TeamMember::where('post_id', $post->id)->delete();
