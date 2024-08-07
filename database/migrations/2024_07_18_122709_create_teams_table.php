@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('post_id');
             $table->string('name');
-            $table->string('position');
+            $table->string('position')->nullable();
             $table->string('department');
             $table->softDeletes();
             $table->timestamps();

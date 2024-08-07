@@ -11,7 +11,7 @@
     <a href="{{ route('admin.index') }}" class="btn btn-warning">
         <i class="fas fa-arrow-left"></i> Geri
     </a>
-
+    <br>
     @if ($errors->any())
         <div id="error-alert" class="alert alert-danger">
             <ul>
@@ -84,7 +84,7 @@
                             <input class="form-control" name="team_name[]" placeholder="Ad Soyad" required>
                         </div>
                         <div class="col">
-                            <input class="form-control" name="team_position[]" placeholder="Görevi" required>
+                            <input class="form-control" name="team_position[]" placeholder="Görevi">
                         </div>
                     </div>
                 </td>

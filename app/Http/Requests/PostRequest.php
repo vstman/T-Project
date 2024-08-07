@@ -24,12 +24,12 @@ class PostRequest extends FormRequest
             'project_code' => 'required|string|max:50',
             'duration' => 'required|string',
             'budget' => 'required|string',
-            'supervisor_name.*' => 'nullable|string|max:255',
-            'supervisor_department.*' => 'nullable|string|max:255',
+            'supervisor_name.*' => 'required|string|max:255',
+            'supervisor_department.*' => 'required|string|max:255',
             'supervisor_photo.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
-            'team_name.*' => 'nullable|string|max:255',
+            'team_name.*' => 'required|string|max:255',
             'team_position.*' => 'nullable|string|max:255',
-            'team_department.*' => 'nullable|string|max:255',
+            'team_department.*' => 'required|string|max:255',
         ];
     }
 
