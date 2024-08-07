@@ -120,31 +120,42 @@ class PostController extends Controller
         $post->budget = $validated['budget'];
         $post->save();
 
-        // Süpervizörler İşlemleri
-        if (isset($request->supervisor_name)) {
-            foreach ($request->supervisor_name as $index => $name) {
-                $supervisorId = $request->supervisor_id[$index] ?? null;
+         // Süpervizör İşlemleri
+    if (isset($request->supervisor_name)) {
+        $supervisorIds = $request->supervisor_id ?? [];
 
-                if ($supervisorId) {
-                    $supervisor = Supervisor::find($supervisorId);
-                } else {
+        foreach ($request->supervisor_name as $index => $name) {
+            $supervisorId = $request->supervisor_id[$index] ?? null;
+
+            if ($supervisorId) {
+                $supervisor = Supervisor::find($supervisorId);
+                if (!$supervisor) {
                     $supervisor = new Supervisor();
                     $supervisor->post_id = $post->id;
                 }
-
-                $supervisor->name = $name;
-                $supervisor->department = $request->supervisor_department[$index] ?? null;
-
-                if ($request->hasFile("supervisor_photo.$index")) {
-                    $file = $request->file("supervisor_photo.$index");
-                    $filename = time() . '_' . $index . '.' . $file->getClientOriginalExtension();
-                    $filePath = $file->storeAs('supervisor_photos', $filename, 'public');
-                    $supervisor->supervisor_photo = 'storage/' . $filePath;
-                }
-
-                $supervisor->save();
+            } else {
+                $supervisor = new Supervisor();
+                $supervisor->post_id = $post->id;
             }
+
+            $supervisor->name = $name;
+            $supervisor->department = $request->supervisor_department[$index] ?? null;
+
+            if ($request->hasFile("supervisor_photo.$index")) {
+                $file = $request->file("supervisor_photo.$index");
+                $filename = time() . '_' . $index . '.' . $file->getClientOriginalExtension();
+                $filePath = $file->storeAs('supervisor_photos', $filename, 'public');
+                $supervisor->supervisor_photo = 'storage/' . $filePath;
+            }
+
+            $supervisor->save();
+            $supervisorIds[] = $supervisor->id;
         }
+
+        Supervisor::where('post_id', $post->id)
+            ->whereNotIn('id', $supervisorIds)
+            ->forceDelete();
+    }
 
         // Ekip Üyesi İşlemleri
         if (isset($request->team_name)) {
