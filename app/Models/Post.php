@@ -28,7 +28,17 @@ class Post extends Model
     {
         parent::boot();
         self::creating(function ($model) {
-            $model->slug = Str::slug($model->project_title, '-');
+            $baseSlug = Str::slug($model->project_title, '-');
+            $slug = $baseSlug;
+            $count = 1;
+
+            // Check if the slug already exists
+            while (self::where('slug', $slug)->exists()) {
+                $slug = $baseSlug . '-' . $count;
+                $count++;
+            }
+
+            $model->slug = $slug;
         });
     }
 

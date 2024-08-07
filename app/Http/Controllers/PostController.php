@@ -77,10 +77,21 @@ class PostController extends Controller
 
             return redirect()->route('admin.index')->with('success', 'Post başarıyla oluşturuldu.');
         } catch (\Exception $e) {
-            Log::error('Error creating post: ' . $e->getMessage());
-            return redirect()->back()->withErrors(['error' => 'An error occurred while creating the post.']);
+            // Hata detaylarını logla
+            Log::error('Post oluşturulurken bir hata oluştu: ' . $e->getMessage());
+
+            // Kullanıcıya hata mesajı göster
+            $errorMessage = 'Post oluşturulurken bir hata meydana geldi. Lütfen bilgilerinizi kontrol edin ve tekrar deneyin.';
+            if ($e->getCode() === 23000) { // Örneğin, veri tabanı benzersizlik hatası
+                $errorMessage = 'Bu proje kodu zaten mevcut. Lütfen farklı bir kod girin.';
+            } elseif ($e instanceof \Illuminate\Database\QueryException) {
+                $errorMessage = 'Veritabanı ile ilgili bir hata oluştu. Lütfen sistem yöneticinize başvurun.';
+            }
+
+            return redirect()->back()->withErrors(['error' => $errorMessage]);
         }
     }
+
 
     public function edit($slug)
     {
