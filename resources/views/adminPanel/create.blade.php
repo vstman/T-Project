@@ -1,12 +1,12 @@
 @extends('adminPanel.layout.app')
 @section('style-content')
-
     <style>
         .alert {
             transition: opacity 0.5s ease-out;
         }
     </style>
 @endsection
+
 @section('content')
     <a href="{{ route('admin.index') }}" class="btn btn-warning">
         <i class="fas fa-arrow-left"></i> Geri
@@ -29,18 +29,26 @@
             <tbody id="project-table-body">
             <tr>
                 <td><label for="supporting-organization" class="col-form-label">Proje Destekleyen Kurum:</label></td>
-                <td colspan="2"><input type="text" class="form-control" id="supporting-organization"
-                                       name="supporting_organization" required></td>
+                <td colspan="2">
+                    <input type="text" class="form-control" id="supporting-organization" name="supporting_organization"
+                           value="{{ old('supporting_organization') }}" required>
+                </td>
             </tr>
             <tr>
                 <td><label for="project-title" class="col-form-label">Proje Adı ve Kodu:</label></td>
-                <td><input class="form-control" id="project-title" name="project_title" placeholder="Proje Adı"
-                           required></td>
-                <td><input class="form-control" id="project-code" name="project_code" placeholder="Kodu" required></td>
+                <td>
+                    <input class="form-control" id="project-title" name="project_title" placeholder="Proje Adı"
+                           value="{{ old('project_title') }}" required>
+                </td>
+                <td>
+                    <input class="form-control" id="project-code" name="project_code" placeholder="Kodu"
+                           value="{{ old('project_code') }}" required>
+                </td>
             </tr>
 
             <tr class="supervisor-template">
-                <td><label for="supervisor" class="col-form-label">Yürütücü:</label>
+                <td>
+                    <label for="supervisor" class="col-form-label">Yürütücü:</label>
                     <button type="button" class="btn btn-danger btn-sm ml-2 remove-row"
                             style="display: none;margin-bottom: 9px;margin-left: 15px;">
                         <i class="fa-solid fa-trash"></i> Sil
@@ -52,13 +60,12 @@
                             <img class="img-thumbnail mr-2 fixed-size supervisor-photo-preview" width="100"
                                  height="100">
                             <input type="file" class="form-control-file" name="supervisor_photo[]" accept="image/*"
-                                   onchange="previewImage(event, this)" required>
-
+                                   onchange="previewImage(event, this)">
                         </div>
                         <input type="text" class="form-control mb-2" name="supervisor_name[]"
-                               placeholder="Unvan Ad Soyad" required>
+                               placeholder="Unvan Ad Soyad" value="{{ old('supervisor_name.0') }}">
                         <input type="text" class="form-control" name="supervisor_department[]"
-                               placeholder="Yürütücü Bölüm" required>
+                               placeholder="Yürütücü Bölüm" value="{{ old('supervisor_department.0') }}">
                     </div>
                 </td>
             </tr>
@@ -67,12 +74,12 @@
                     <button type="button" class="btn btn-primary btn-sm" id="add-supervisor">
                         <i class="fa-solid fa-plus"></i> Yürütücü Ekle
                     </button>
-
                 </td>
             </tr>
 
             <tr class="team-template">
-                <td><label for="team" class="col-form-label">Proje Ekibi:</label>
+                <td>
+                    <label for="team" class="col-form-label">Proje Ekibi:</label>
                     <button type="button" class="btn btn-danger btn-sm mt-2 remove-row"
                             style="display: none;margin-bottom: 9px;margin-left: 15px;">
                         <i class="fa-solid fa-trash"></i> Sil
@@ -81,16 +88,15 @@
                 <td colspan="1">
                     <div class="row">
                         <div class="col">
-                            <input class="form-control" name="team_name[]" placeholder="Ad Soyad" required>
+                            <input class="form-control" name="team_name[]" placeholder="Ad Soyad" value="{{ old('team_name.0') }}" required>
                         </div>
                         <div class="col">
-                            <input class="form-control" name="team_position[]" placeholder="Görevi">
+                            <input class="form-control" name="team_position[]" placeholder="Görevi" value="{{ old('team_position.0') }}">
                         </div>
                     </div>
                 </td>
                 <td>
-                    <input class="form-control" name="team_department[]" placeholder="Üniversite Bölüm" required>
-
+                    <input class="form-control" name="team_department[]" placeholder="Üniversite Bölüm" value="{{ old('team_department.0') }}" required>
                 </td>
             </tr>
             <tr>
@@ -103,11 +109,17 @@
 
             <tr>
                 <td><label for="duration" class="col-form-label">Proje Süresi (Ay):</label></td>
-                <td colspan="2"><input type="text" class="form-control" id="duration" name="duration" required></td>
+                <td colspan="2">
+                    <input type="text" class="form-control" id="duration" name="duration"
+                           value="{{ old('duration') }}" required>
+                </td>
             </tr>
             <tr>
                 <td><label for="budget" class="col-form-label">Proje Bütçesi:</label></td>
-                <td colspan="2"><input type="text" class="form-control" id="budget" name="budget" required></td>
+                <td colspan="2">
+                    <input type="text" class="form-control" id="budget" name="budget"
+                           value="{{ old('budget') }}" required>
+                </td>
             </tr>
             </tbody>
         </table>
@@ -174,7 +186,6 @@
                 alert('Lütfen gerekli tüm alanları doldurun.');
             }
         });
-
 
     </script>
 
